@@ -4,7 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/page2"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".Page2">
+
 
     <!-- Toolbar -->
     <com.google.android.material.appbar.AppBarLayout
@@ -22,6 +24,18 @@
             app:title="EPITIE / IMC Track"
             app:titleTextColor="@android:color/white"/>
     </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- main content -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/page2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
 
     <Button
         android:id="@+id/gauche"
