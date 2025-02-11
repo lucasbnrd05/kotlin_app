@@ -1,6 +1,8 @@
 package com.example.imctrack
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -22,5 +24,11 @@ class MainActivity : AppCompatActivity() {
         // Configurer la Toolbar
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+        val buttonNext: Button = findViewById(R.id.button)
+       /* buttonNext.setOnClickListener {
+            val intent = Intent(this, this)
+            startActivity(intent)
+        }*/
     }
 }
