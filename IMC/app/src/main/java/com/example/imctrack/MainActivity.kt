@@ -26,9 +26,9 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         val buttonNext: Button = findViewById(R.id.button)
-       /* buttonNext.setOnClickListener {
-            val intent = Intent(this, this)
+        buttonNext.setOnClickListener {
+            val intent = Intent(this, Page2::class.java)
             startActivity(intent)
-        }*/
+        }
     }
 }

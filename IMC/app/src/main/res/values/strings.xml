@@ -2,4 +2,6 @@
     <string name="app_name">IMCTrack</string>
     <string name="hello_word">Hello Word!</string>
     <string name="button">Button</string>
+    <string name="page2">page2</string>
+    <string name="page3" />
 </resources>
