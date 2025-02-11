@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">IMCTrack</string>
+    <string name="hello_word">Hello Word!</string>
+    <string name="button">Button</string>
 </resources>
