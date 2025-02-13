@@ -27,7 +27,7 @@ Workspace : [Sharepoint](https://upm365.sharepoint.com/:u:/r/sites/epitie/SitePa
 
 List of MAD developers:
 
-• Lucas BERNARDEAU (lucas.bernardeau@alumnos.upm.es)
-• Nathan VANATHATHAN (nathan.vanathathan@alumnos.upm.es)
+- Lucas BERNARDEAU (lucas.bernardeau@alumnos.upm.es)
+- Nathan VANATHATHAN (nathan.vanathathan@alumnos.upm.es)
 
 Workload distribution between members: (50% / 50%).
