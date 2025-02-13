@@ -1,34 +1,67 @@
 package com.example.imctrack
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.Task
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationTextView: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
-        // Configurer la Toolbar
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
+        locationTextView = findViewById(R.id.location_text_view)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        requestLocationPermission()
+
         val buttonNext: Button = findViewById(R.id.button)
         buttonNext.setOnClickListener {
-            val intent = Intent(this, Page2::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, Page2::class.java))
+        }
+    }
+
+    private fun requestLocationPermission() {
+        val locationPermissionRequest =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+                if (isGranted) {
+                    getLocation()
+                } else {
+                    locationTextView.text = "Permission refusée"
+                }
+            }
+        locationPermissionRequest.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getLocation() {
+        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+            location?.let {
+                val latitude = it.latitude
+                val longitude = it.longitude
+                locationTextView.text = "Latitude: $latitude\nLongitude: $longitude"
+            } ?: run {
+                locationTextView.text = "Localisation non disponible"
+            }
         }
     }
 }
