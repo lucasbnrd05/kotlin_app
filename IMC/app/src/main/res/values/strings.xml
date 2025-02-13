@@ -4,4 +4,5 @@
     <string name="button">Button</string>
     <string name="page2">page2</string>
     <string name="page3">page3</string>
+    <string name="location_retrieval">Location retrieval...</string>
 </resources>
