@@ -29,5 +29,6 @@ List of MAD developers:
 
 - Lucas BERNARDEAU (lucas.bernardeau@alumnos.upm.es)
 - Nathan VANATHATHAN (nathan.vanathathan@alumnos.upm.es)
+- Dina DIDOUCHE (dina.didouche@alumnos.upm.es)
 
-Workload distribution between members: (50% / 50%).
+Workload distribution between members: (33% / 33% / 33%).
