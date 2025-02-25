@@ -2,13 +2,13 @@ package com.example.imctrack
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,6 +22,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Task
 import org.osmdroid.util.GeoPoint
 
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -29,7 +30,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
     private lateinit var userIdentifierButton: Button
     private lateinit var saveUserButton: Button
-    private lateinit var buttonTheme: Button
     private lateinit var deleteUsersButton: Button
     private lateinit var newUserEditText: EditText
     private lateinit var userIdentifierSpinner: Spinner
@@ -79,7 +79,6 @@ class MainActivity : AppCompatActivity() {
         newUserEditText = findViewById(R.id.newUserEditText)
         saveUserButton = findViewById(R.id.saveUserButton)
         userIdentifierSpinner = findViewById(R.id.userIdentifierSpinner)
-        buttonTheme = findViewById(R.id.T)
         deleteUsersButton = findViewById(R.id.deleteUsersButton)
 
         userIdentifierButton.setOnClickListener {
@@ -105,10 +104,44 @@ class MainActivity : AppCompatActivity() {
             showDeleteConfirmationDialog()
         }
 
-        buttonTheme.setOnClickListener {
-            toggleTheme()
+    }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_theme -> {
+                toggleTheme()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
+    private fun setAppropriateTheme() {
+        val isDarkMode = sharedPreferencesHelper.getTheme()
+        AppCompatDelegate.setDefaultNightMode(if (isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
+    }
+
+    private fun toggleTheme() {
+        val isDarkMode = sharedPreferencesHelper.getTheme()
+        sharedPreferencesHelper.saveTheme(!isDarkMode)
+        setAppropriateTheme()
+    }
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        val themeItem = menu?.findItem(R.id.action_theme)
+        val isDarkMode = sharedPreferencesHelper.getTheme()
+
+        themeItem?.setIcon(
+            if (isDarkMode) R.drawable.ic_sun else R.drawable.ic_moon
+        )
+
+        return super.onPrepareOptionsMenu(menu)
+    }
+
+
+
 
     private fun updateUserSpinner() {
         val usersSet = sharedPreferencesHelper.getUsers()
@@ -146,16 +179,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setAppropriateTheme() {
-        val isDarkMode = sharedPreferencesHelper.getTheme()
-        AppCompatDelegate.setDefaultNightMode(if (isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
-    }
-
-    private fun toggleTheme() {
-        val isDarkMode = sharedPreferencesHelper.getTheme()
-        sharedPreferencesHelper.saveTheme(!isDarkMode)
-        setAppropriateTheme()
-    }
 
     private fun showDeleteConfirmationDialog() {
         AlertDialog.Builder(this)
