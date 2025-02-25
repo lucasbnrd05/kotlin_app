@@ -18,6 +18,10 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Task
 import org.osmdroid.util.GeoPoint
 
+import android.app.AlertDialog
+import android.widget.EditText
+import android.widget.Toast
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -61,6 +65,12 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("locationBundle", bundle)
             startActivity(intent)
         }
+
+        val userIdentifierButton: Button = findViewById(R.id.userIdentifierButton)
+        userIdentifierButton.setOnClickListener {
+            showUserIdentifierDialog()
+        }
+
     }
 
     private fun requestLocationPermission() {
@@ -84,5 +94,24 @@ class MainActivity : AppCompatActivity() {
                 Log.e("MainActivity", "Failed to get location.")
             }
         }
+    }
+    private fun showUserIdentifierDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Enter User Identifier")
+        val input = EditText(this)
+        builder.setView(input)
+        builder.setPositiveButton("OK") { dialog, which ->
+            val userInput = input.text.toString()
+            if (userInput.isNotBlank()) {
+                Toast.makeText(this, "User ID saved: $userInput", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this, "User ID cannot be blank", Toast.LENGTH_LONG).show()
+            }
+        }
+        builder.setNegativeButton("Cancel") { dialog, which ->
+            Toast.makeText(this, "Thanks and goodbye!", Toast.LENGTH_LONG).show()
+            dialog.cancel()
+        }
+        builder.show()
     }
 }
