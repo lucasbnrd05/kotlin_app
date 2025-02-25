@@ -1,39 +1,47 @@
 package com.example.imctrack
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import androidx.activity.enableEdgeToEdge
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
-import androidx.appcompat.widget.Toolbar
-
-class Page2 : AppCompatActivity()  {
+class Page2 : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.page2)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.page2)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
-        // Configurer la Toolbar
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        // Views
+        val heightEditText: EditText = findViewById(R.id.editHeight)
+        val weightEditText: EditText = findViewById(R.id.editWeight)
+        val calculateButton: Button = findViewById(R.id.calculateBMI)
+        val resultTextView: TextView = findViewById(R.id.resultBMI)
 
-        val buttonNext: Button = findViewById(R.id.gauche)
-         buttonNext.setOnClickListener {
-             val intent = Intent(this, MainActivity::class.java)
-             startActivity(intent)
-         }
-        val buttonNext2: Button = findViewById(R.id.droite)
-        buttonNext2.setOnClickListener {
-            val intent = Intent(this, Page3::class.java)
-            startActivity(intent)
+        // Button click to calculate BMI
+        calculateButton.setOnClickListener {
+            // Get the height and weight values from the user
+            val heightStr = heightEditText.text.toString()
+            val weightStr = weightEditText.text.toString()
+
+            // Validate inputs
+            if (heightStr.isEmpty() || weightStr.isEmpty()) {
+                Toast.makeText(this, "Please enter both height and weight", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Convert height and weight to float
+            val height = heightStr.toFloat()
+            val weight = weightStr.toFloat()
+
+            // Calculate BMI (height is in cm, so convert to meters)
+            val heightInMeters = height / 100
+            val bmi = weight / (heightInMeters * heightInMeters)
+
+            // Display BMI result
+            resultTextView.text = "Your BMI is: %.2f".format(bmi)
         }
     }
 }
