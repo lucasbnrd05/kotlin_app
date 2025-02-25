@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".Page2">
 
-
     <!-- Toolbar -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -21,39 +20,55 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:title="EPITIE / IMC Track"
+            app:title="BMI Calculator"
             app:titleTextColor="@android:color/white"/>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- main content -->
+    <!-- Height input -->
+    <EditText
+        android:id="@+id/editHeight"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter height (cm)"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="100dp"/>
+
+    <!-- Weight input -->
+    <EditText
+        android:id="@+id/editWeight"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter weight (kg)"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editHeight"
+        android:layout_marginTop="20dp"/>
+
+    <!-- Calculate BMI button -->
+    <Button
+        android:id="@+id/calculateBMI"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calculate BMI"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editWeight"
+        android:layout_marginTop="30dp"/>
+
+    <!-- BMI Result Text -->
     <TextView
+        android:id="@+id/resultBMI"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/page2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Your BMI will appear here"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-
-    <Button
-        android:id="@+id/gauche"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="pour aller a Gauche"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
-
-    <Button
-        android:id="@+id/droite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="pour aller a Droite"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
-
+        app:layout_constraintTop_toBottomOf="@id/calculateBMI"
+        android:layout_marginTop="30dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
