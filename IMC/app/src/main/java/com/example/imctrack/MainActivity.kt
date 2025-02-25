@@ -19,7 +19,11 @@ import com.google.android.gms.tasks.Task
 import org.osmdroid.util.GeoPoint
 
 import android.app.AlertDialog
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
@@ -34,6 +38,13 @@ class MainActivity : AppCompatActivity() {
             Log.e("MainActivity", "Location permission denied.")
         }
     }
+    private lateinit var userIdentifierButton: Button
+    private lateinit var newUserEditText: EditText
+    private lateinit var saveUserButton: Button
+    private lateinit var userIdentifierSpinner: Spinner
+
+    // Liste pour stocker les utilisateurs (ou tu peux utiliser un fichier)
+    private val usersList = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,11 +77,68 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val userIdentifierButton: Button = findViewById(R.id.userIdentifierButton)
+        userIdentifierButton = findViewById(R.id.userIdentifierButton)
+        newUserEditText = findViewById(R.id.newUserEditText)
+        saveUserButton = findViewById(R.id.saveUserButton)
+        userIdentifierSpinner = findViewById(R.id.userIdentifierSpinner)
+
+        // On écoute le clic du bouton "Enter User ID"
         userIdentifierButton.setOnClickListener {
-            showUserIdentifierDialog()
+            // Afficher l'EditText et le bouton "Save User"
+            newUserEditText.visibility = View.VISIBLE
+            saveUserButton.visibility = View.VISIBLE
         }
 
+        // Gestion du clic sur le bouton "Save User"
+        saveUserButton.setOnClickListener {
+            val newUserName = newUserEditText.text.toString().trim()
+
+            if (newUserName.isNotBlank()) {
+                // Ajouter l'utilisateur à la liste
+                usersList.add(newUserName)
+
+                // Sauvegarder dans un fichier si nécessaire (je vais utiliser SharedPreferences comme exemple)
+                saveUserToFile(newUserName)
+
+                // Mettre à jour le Spinner avec la liste des utilisateurs
+                updateUserSpinner()
+
+                // Réinitialiser le champ de texte et cacher l'EditText
+                newUserEditText.text.clear()
+                newUserEditText.visibility = View.GONE
+                saveUserButton.visibility = View.GONE
+
+                Toast.makeText(this, "User saved: $newUserName", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Please enter a valid username", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+    // Méthode pour enregistrer l'utilisateur dans un fichier (SharedPreferences dans cet exemple)
+    private fun saveUserToFile(userName: String) {
+        val sharedPref = getSharedPreferences("users", Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
+        val currentUsers = sharedPref.getStringSet("user_list", mutableSetOf()) ?: mutableSetOf()
+        currentUsers.add(userName)
+        editor.putStringSet("user_list", currentUsers)
+        editor.apply()
+    }
+
+    // Méthode pour mettre à jour le Spinner avec les utilisateurs enregistrés
+    private fun updateUserSpinner() {
+        val sharedPref = getSharedPreferences("users", Context.MODE_PRIVATE)
+        val usersSet = sharedPref.getStringSet("user_list", mutableSetOf()) ?: mutableSetOf()
+
+        val usersList = usersSet.toList()
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, usersList)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        userIdentifierSpinner.adapter = adapter
+    }
+
+    // Si tu veux charger les utilisateurs au démarrage de l'activité
+    override fun onResume() {
+        super.onResume()
+        updateUserSpinner()
     }
 
     private fun requestLocationPermission() {
@@ -95,23 +163,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-    private fun showUserIdentifierDialog() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Enter User Identifier")
-        val input = EditText(this)
-        builder.setView(input)
-        builder.setPositiveButton("OK") { dialog, which ->
-            val userInput = input.text.toString()
-            if (userInput.isNotBlank()) {
-                Toast.makeText(this, "User ID saved: $userInput", Toast.LENGTH_LONG).show()
-            } else {
-                Toast.makeText(this, "User ID cannot be blank", Toast.LENGTH_LONG).show()
-            }
-        }
-        builder.setNegativeButton("Cancel") { dialog, which ->
-            Toast.makeText(this, "Thanks and goodbye!", Toast.LENGTH_LONG).show()
-            dialog.cancel()
-        }
-        builder.show()
-    }
+
+
+
+
+
 }
