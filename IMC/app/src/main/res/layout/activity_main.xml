@@ -76,13 +76,24 @@
         android:id="@+id/buttonmap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Carte"
+        android:text="MAP"
         app:layout_constraintTop_toBottomOf="@id/saveUserButton"
         app:layout_constraintBottom_toTopOf="@id/button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Bouton 3 : Collé en bas et centré -->
+
+    <Button
+        android:id="@+id/T"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="THEME"
+        app:layout_constraintTop_toBottomOf="@id/buttonmap"
+        app:layout_constraintBottom_toTopOf="@id/button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
