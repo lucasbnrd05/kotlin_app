@@ -1,5 +1,6 @@
 package com.example.imctrack
 
+import SharedPreferencesHelper
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
@@ -25,11 +26,14 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var latestLocation: Location? = null
+
+    private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
 
     private val requestLocationPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
         if (granted) {
@@ -50,8 +54,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+        sharedPreferencesHelper = SharedPreferencesHelper(this)
+        setAppropriateTheme()
+
 
         val buttonNext: Button = findViewById(R.id.button)
         buttonNext.setOnClickListener {
@@ -113,6 +122,12 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please enter a valid username", Toast.LENGTH_SHORT).show()
             }
         }
+
+        val buttonTheme: Button = findViewById(R.id.T) // Le bouton pour changer le thème
+        buttonTheme.setOnClickListener {
+            toggleTheme()
+        }
+
     }
     // Méthode pour enregistrer l'utilisateur dans un fichier (SharedPreferences dans cet exemple)
     private fun saveUserToFile(userName: String) {
@@ -164,6 +179,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setAppropriateTheme() {
+        // Appliquer le thème sauvegardé (clair ou sombre)
+        val isDarkMode = sharedPreferencesHelper.getTheme()
+        if (isDarkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+    }
+
+    private fun toggleTheme() {
+        val isDarkMode = sharedPreferencesHelper.getTheme()
+        // Inverser le thème
+        sharedPreferencesHelper.saveTheme(!isDarkMode)
+        setAppropriateTheme()  // Appliquer le nouveau thème
+    }
 
 
 
