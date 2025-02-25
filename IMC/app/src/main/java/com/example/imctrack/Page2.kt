@@ -1,19 +1,32 @@
 package com.example.imctrack
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class Page2 : AppCompatActivity() {
 
+    private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.page2)
+        sharedPreferencesHelper = SharedPreferencesHelper(this)
+        setAppropriateTheme()
+
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+
 
         // Views
         val heightEditText: EditText = findViewById(R.id.editHeight)
@@ -56,4 +69,39 @@ class Page2 : AppCompatActivity() {
         }
 
     }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_theme -> {
+                toggleTheme()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+    private fun setAppropriateTheme() {
+        val isDarkMode = sharedPreferencesHelper.getTheme()
+        AppCompatDelegate.setDefaultNightMode(if (isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
+    }
+
+    private fun toggleTheme() {
+        val isDarkMode = sharedPreferencesHelper.getTheme()
+        sharedPreferencesHelper.saveTheme(!isDarkMode)
+        setAppropriateTheme()
+    }
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        val themeItem = menu?.findItem(R.id.action_theme)
+        val isDarkMode = sharedPreferencesHelper.getTheme()
+
+        themeItem?.setIcon(
+            if (isDarkMode) R.drawable.ic_sun else R.drawable.ic_moon
+        )
+
+        return super.onPrepareOptionsMenu(menu)
+    }
+
 }
