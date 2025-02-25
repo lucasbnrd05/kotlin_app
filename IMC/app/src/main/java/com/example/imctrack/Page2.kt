@@ -1,4 +1,5 @@
 package com.example.imctrack
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -43,5 +44,16 @@ class Page2 : AppCompatActivity() {
             // Display BMI result
             resultTextView.text = "Your BMI is: %.2f".format(bmi)
         }
+        val buttonNext: Button = findViewById(R.id.gauche)
+        buttonNext.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+        val buttonNext2: Button = findViewById(R.id.droite)
+        buttonNext2.setOnClickListener {
+            val intent = Intent(this, Page3::class.java)
+            startActivity(intent)
+        }
+
     }
 }
