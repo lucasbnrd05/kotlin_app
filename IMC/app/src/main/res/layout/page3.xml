@@ -21,7 +21,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="@color/blue_primary"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:title="EPITIE / IMC Track"
             app:titleTextColor="@android:color/white"/>
@@ -45,6 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="pour aller a Gauche"
+        android:backgroundTint="@color/blue_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0.5" />
