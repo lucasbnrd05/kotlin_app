@@ -25,29 +25,64 @@
             app:titleTextColor="@android:color/white"/>
     </com.google.android.material.appbar.AppBarLayout>
 
+    <!-- Bouton pour entrer un nouvel ID utilisateur, centré -->
     <Button
         android:id="@+id/userIdentifierButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Entrer l'ID utilisateur"
+        android:text="Enter User ID"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/buttonmap"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
 
-    <!-- Bouton 2 : Carte -->
+    <!-- EditText pour entrer un nouvel ID utilisateur (initialement masqué) -->
+    <EditText
+        android:id="@+id/newUserEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Enter New User ID"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/userIdentifierButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.4" /> <!-- Ajuste aussi le biais vertical -->
+
+    <!-- Spinner pour afficher les utilisateurs existants -->
+    <Spinner
+        android:id="@+id/userIdentifierSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/newUserEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.5" /> <!-- Ajuste le biais vertical -->
+
+    <!-- Bouton pour enregistrer un nouvel utilisateur, seulement visible lorsqu'on entre un nom -->
+    <Button
+        android:id="@+id/saveUserButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save User"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/newUserEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <!-- Bouton 2 : Carte, centré -->
     <Button
         android:id="@+id/buttonmap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Carte"
-        app:layout_constraintTop_toBottomOf="@id/userIdentifierButton"
+        app:layout_constraintTop_toBottomOf="@id/saveUserButton"
         app:layout_constraintBottom_toTopOf="@id/button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Bouton 3 : Collé en bas -->
+    <!-- Bouton 3 : Collé en bas et centré -->
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
@@ -55,6 +90,7 @@
         android:text="@string/button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="1" /> <!-- Ce bouton est collé en bas -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
