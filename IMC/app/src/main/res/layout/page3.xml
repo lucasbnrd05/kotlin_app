@@ -44,7 +44,7 @@
         android:id="@+id/gauche"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="pour aller a Gauche"
+        android:text="Previous"
         android:backgroundTint="@color/blue_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
