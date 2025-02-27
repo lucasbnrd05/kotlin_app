@@ -1,5 +1,4 @@
 package com.example.imctrack
-
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -21,7 +20,8 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Task
 import org.osmdroid.util.GeoPoint
-
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationBarView
 
 class MainActivity : AppCompatActivity() {
 
@@ -51,29 +51,32 @@ class MainActivity : AppCompatActivity() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
+        // Trouver la BottomNavigationView
+        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
+
         sharedPreferencesHelper = SharedPreferencesHelper(this)
         setAppropriateTheme()
 
-        val buttonNext: Button = findViewById(R.id.button)
-        buttonNext.setOnClickListener {
-            startActivity(Intent(this, Page2::class.java))
-        }
+//        val buttonNext: Button = findViewById(R.id.button)
+//        buttonNext.setOnClickListener {
+//            startActivity(Intent(this, Page2::class.java))
+//        }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         requestLocationPermission()
 
-        val buttonOsm: Button = findViewById(R.id.buttonmap)
-        buttonOsm.setOnClickListener {
-            val startPoint = latestLocation?.let {
-                GeoPoint(it.latitude, it.longitude)
-            } ?: GeoPoint(40.389683644051864, -3.627825356970311)
-
-            val intent = Intent(this, OpenStreetMapsActivity::class.java)
-            val bundle = Bundle()
-            bundle.putParcelable("location", startPoint)
-            intent.putExtra("locationBundle", bundle)
-            startActivity(intent)
-        }
+//        val buttonOsm: Button = findViewById(R.id.buttonmap)
+//        buttonOsm.setOnClickListener {
+//            val startPoint = latestLocation?.let {
+//                GeoPoint(it.latitude, it.longitude)
+//            } ?: GeoPoint(40.389683644051864, -3.627825356970311)
+//
+//            val intent = Intent(this, OpenStreetMapsActivity::class.java)
+//            val bundle = Bundle()
+//            bundle.putParcelable("location", startPoint)
+//            intent.putExtra("locationBundle", bundle)
+//            startActivity(intent)
+//        }
 
         userIdentifierButton = findViewById(R.id.userIdentifierButton)
         newUserEditText = findViewById(R.id.newUserEditText)
@@ -104,7 +107,33 @@ class MainActivity : AppCompatActivity() {
             showDeleteConfirmationDialog()
         }
 
+        // Gestion de la sélection dans la BottomNavigationView
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_map -> {
+                    // Ouvrir la carte (OpenStreetMaps)
+                    val startPoint = latestLocation?.let {
+                        GeoPoint(it.latitude, it.longitude)
+                    } ?: GeoPoint(40.389683644051864, -3.627825356970311)
+
+                    val intent = Intent(this, OpenStreetMapsActivity::class.java)
+                    val bundle = Bundle()
+                    bundle.putParcelable("location", startPoint)
+                    intent.putExtra("locationBundle", bundle)
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_next -> {
+                    // Passer à la page suivante
+                    val intent = Intent(this, Page2::class.java)
+                    startActivity(intent)
+                    true
+                }
+                else -> false
+            }
+        }
     }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
@@ -119,6 +148,7 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
     private fun setAppropriateTheme() {
         val isDarkMode = sharedPreferencesHelper.getTheme()
         AppCompatDelegate.setDefaultNightMode(if (isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
@@ -129,6 +159,7 @@ class MainActivity : AppCompatActivity() {
         sharedPreferencesHelper.saveTheme(!isDarkMode)
         setAppropriateTheme()
     }
+
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         val themeItem = menu?.findItem(R.id.action_theme)
         val isDarkMode = sharedPreferencesHelper.getTheme()
@@ -139,9 +170,6 @@ class MainActivity : AppCompatActivity() {
 
         return super.onPrepareOptionsMenu(menu)
     }
-
-
-
 
     private fun updateUserSpinner() {
         val usersSet = sharedPreferencesHelper.getUsers()
@@ -178,7 +206,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
 
     private fun showDeleteConfirmationDialog() {
         AlertDialog.Builder(this)

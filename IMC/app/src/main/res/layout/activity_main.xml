@@ -15,6 +15,7 @@
         android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
         tools:ignore="MissingConstraints">
 
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -33,7 +34,7 @@
         android:text="Enter User ID"
         android:backgroundTint="@color/blue_button"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/buttonmap"
+        app:layout_constraintBottom_toTopOf="@id/deleteUsersButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
@@ -74,7 +75,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_bias="0.5" />
 
-    <!-- Bouton 2 : Carte, centré -->
+    <!-- Bouton 2 : Carte, centré
     <Button
         android:id="@+id/buttonmap"
         android:layout_width="wrap_content"
@@ -84,7 +85,7 @@
         app:layout_constraintTop_toBottomOf="@id/saveUserButton"
         app:layout_constraintBottom_toTopOf="@id/button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" /> -->
 
     <!-- Bouton 3 : Collé en bas et centré -->
 
@@ -95,20 +96,29 @@
         android:layout_height="wrap_content"
         android:text="DELETE"
         android:backgroundTint="@color/blue_button"
-        app:layout_constraintTop_toBottomOf="@id/buttonmap"
-        app:layout_constraintBottom_toTopOf="@id/button"
+        app:layout_constraintTop_toBottomOf="@id/saveUserButton"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
+    <!--<Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="NEXT PAGE"
+        android:layout_marginBottom="168dp"
         android:backgroundTint="@color/blue_button"
+        android:text="NEXT PAGE"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="1" /> <!-- Ce bouton est collé en bas -->
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toStartOf="parent" /> -->
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/bottom_nav_menu"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
