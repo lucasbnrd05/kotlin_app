@@ -1,11 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/nav_map"
-        android:icon="@drawable/ic_map"
+        android:id="@+id/nav_previous"
+        android:icon="@drawable/ic_left"
         android:title="Previous" />
 
     <item
         android:id="@+id/nav_next"
-        android:icon="@drawable/ic_next"
+        android:icon="@drawable/ic_right"
         android:title="Next" />
 </menu>

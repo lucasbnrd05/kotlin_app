@@ -4,16 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-
 import androidx.appcompat.widget.Toolbar
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class Page3 : AppCompatActivity()  {
+class Page3 : AppCompatActivity() {
 
     private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
 
@@ -34,11 +34,25 @@ class Page3 : AppCompatActivity()  {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val buttonNext: Button = findViewById(R.id.gauche)
-         buttonNext.setOnClickListener {
-             val intent = Intent(this, Page2::class.java)
-             startActivity(intent)
-         }
+        // Configurer la Bottom Navigation
+        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_previous -> {
+                    // Naviguer vers Page2
+                    val intent = Intent(this, Page2::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_home -> {
+                    // Naviguer vers MainActivity
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -55,6 +69,7 @@ class Page3 : AppCompatActivity()  {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
     private fun setAppropriateTheme() {
         val isDarkMode = sharedPreferencesHelper.getTheme()
         AppCompatDelegate.setDefaultNightMode(if (isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
@@ -65,6 +80,7 @@ class Page3 : AppCompatActivity()  {
         sharedPreferencesHelper.saveTheme(!isDarkMode)
         setAppropriateTheme()
     }
+
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         val themeItem = menu?.findItem(R.id.action_theme)
         val isDarkMode = sharedPreferencesHelper.getTheme()
@@ -75,5 +91,4 @@ class Page3 : AppCompatActivity()  {
 
         return super.onPrepareOptionsMenu(menu)
     }
-
 }
