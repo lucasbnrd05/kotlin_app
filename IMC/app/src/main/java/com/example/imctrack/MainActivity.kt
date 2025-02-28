@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity() {
         // Trouver la BottomNavigationView
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
 
+        bottomNavigationView.visibility = View.VISIBLE
         sharedPreferencesHelper = SharedPreferencesHelper(this)
         setAppropriateTheme()
 

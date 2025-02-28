@@ -1,4 +1,5 @@
 package com.example.imctrack
+
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -10,8 +11,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.example.imctrack.MainActivity
+import com.example.imctrack.Page3
+import com.example.imctrack.R
+import com.example.imctrack.SharedPreferencesHelper
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class Page2 : AppCompatActivity() {
 
@@ -25,8 +29,6 @@ class Page2 : AppCompatActivity() {
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-
-
 
         // Views
         val heightEditText: EditText = findViewById(R.id.editHeight)
@@ -57,32 +59,28 @@ class Page2 : AppCompatActivity() {
             // Display BMI result
             resultTextView.text = "Your BMI is: %.2f".format(bmi)
         }
-        val buttonNext: Button = findViewById(R.id.gauche)
-        buttonNext.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
-        val buttonNext2: Button = findViewById(R.id.droite)
-        buttonNext2.setOnClickListener {
-            val intent = Intent(this, Page3::class.java)
-            startActivity(intent)
-        }
 
-    }
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_theme -> {
-                toggleTheme()
-                true
+        // Bottom Navigation
+        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_previous -> {
+                    // Go to MainActivity
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_next -> {
+                    // Go to Page3
+                    val intent = Intent(this, Page3::class.java)
+                    startActivity(intent)
+                    true
+                }
+                else -> false
             }
-            else -> super.onOptionsItemSelected(item)
         }
     }
+
     private fun setAppropriateTheme() {
         val isDarkMode = sharedPreferencesHelper.getTheme()
         AppCompatDelegate.setDefaultNightMode(if (isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
@@ -93,6 +91,7 @@ class Page2 : AppCompatActivity() {
         sharedPreferencesHelper.saveTheme(!isDarkMode)
         setAppropriateTheme()
     }
+
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         val themeItem = menu?.findItem(R.id.action_theme)
         val isDarkMode = sharedPreferencesHelper.getTheme()
@@ -103,5 +102,4 @@ class Page2 : AppCompatActivity() {
 
         return super.onPrepareOptionsMenu(menu)
     }
-
 }
