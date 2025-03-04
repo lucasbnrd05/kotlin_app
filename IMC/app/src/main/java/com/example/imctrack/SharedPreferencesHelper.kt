@@ -2,6 +2,8 @@ package com.example.imctrack
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class SharedPreferencesHelper(context: Context) {
 
@@ -32,5 +34,26 @@ class SharedPreferencesHelper(context: Context) {
 
     fun clearUsers() {
         sharedPreferences.edit().remove("user_list").apply()
+    }
+
+    private val gson = Gson()
+
+    fun saveGoals(goals: List<String>) {
+        val json = gson.toJson(goals)
+        sharedPreferences.edit().putString("user_goals", json).apply()
+    }
+
+    fun getGoals(): List<String> {
+        val json = sharedPreferences.getString("user_goals", null)
+        return if (json != null) {
+            val type = object : TypeToken<List<String>>() {}.type
+            gson.fromJson(json, type)
+        } else {
+            emptyList()
+        }
+    }
+
+    fun clearGoals() {
+        sharedPreferences.edit().remove("user_goals").apply()
     }
 }

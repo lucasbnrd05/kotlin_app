@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -32,13 +33,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var latestLocation: Location? = null
     private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
-//    private lateinit var userIdentifierButton: Button
-//    private lateinit var saveUserButton: Button
-//    private lateinit var deleteUsersButton: Button
-//    private lateinit var newUserEditText: EditText
-//    private lateinit var userIdentifierSpinner: Spinner
-//    private var usersList = mutableListOf<String>()
     private lateinit var drawerLayout: DrawerLayout
+
+    private lateinit var objectivesSection: LinearLayout
+    private lateinit var addGoalButton: Button
+    private val goalList = mutableListOf<String>() // Liste des objectifs
 
     private val requestLocationPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
@@ -85,16 +84,103 @@ class MainActivity : AppCompatActivity() {
                     startActivity(intent)
                     true
                 }
+
                 R.id.nav_next -> {
                     // Passer à la page suivante
                     val intent = Intent(this, Page2::class.java)
                     startActivity(intent)
                     true
                 }
+
                 else -> false
             }
         }
+        objectivesSection = findViewById(R.id.objectives_container)
+        addGoalButton = findViewById(R.id.add_goal_button)
+
+        // Charger les objectifs enregistrés
+        loadGoals()
+
+        addGoalButton.setOnClickListener {
+            showAddGoalDialog()
+        }
+
     }
+
+
+    private fun showAddGoalDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_add_goal, null)
+        val goalInput = dialogView.findViewById<EditText>(R.id.goal_input)
+
+        AlertDialog.Builder(this)
+            .setTitle("Ajouter un objectif")
+            .setView(dialogView)
+            .setPositiveButton("Ajouter") { _, _ ->
+                val goalText = goalInput.text.toString()
+                if (goalText.isNotEmpty()) {
+                    goalList.add(goalText)
+                    saveGoals()
+                    addGoalToList(goalText)
+                }
+            }
+            .setNegativeButton("Annuler", null)
+            .show()
+    }
+
+    private fun addGoalToList(goalText: String) {
+        val goalLayout = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply { setMargins(0, 16, 0, 0) }
+        }
+
+        val goalTextView = TextView(this).apply {
+            text = goalText
+            textSize = 18f
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+        }
+
+        val deleteButton = Button(this).apply {
+            text = "✖"
+            textSize = 14f
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply { setMargins(16, 0, 0, 0) }
+
+            setOnClickListener {
+                objectivesSection.removeView(goalLayout)
+                goalList.remove(goalText)
+                saveGoals()
+            }
+        }
+
+        goalLayout.addView(goalTextView)
+        goalLayout.addView(deleteButton)
+        objectivesSection.addView(goalLayout)
+    }
+
+    private fun saveGoals() {
+        sharedPreferencesHelper.saveGoals(goalList)
+    }
+
+    private fun loadGoals() {
+        goalList.clear()
+        goalList.addAll(sharedPreferencesHelper.getGoals())
+
+        for (goal in goalList) {
+            addGoalToList(goal)
+        }
+    }
+
+
+
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -107,11 +193,13 @@ class MainActivity : AppCompatActivity() {
                 toggleTheme()
                 true
             }
+
             R.id.nav_settings -> {
                 val intent = Intent(this, SettingsActivity::class.java)
                 startActivity(intent)
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -138,24 +226,16 @@ class MainActivity : AppCompatActivity() {
         return super.onPrepareOptionsMenu(menu)
     }
 
-//    private fun updateUserSpinner() {
-//        val usersSet = sharedPreferencesHelper.getUsers()
-//        usersList = usersSet.toMutableList()
-//        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, usersList)
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-//        userIdentifierSpinner.adapter = adapter
-//    }
-
-//    override fun onResume() {
-//        super.onResume()
-//        updateUserSpinner()
-//    }
 
     private fun requestLocationPermission() {
         when {
-            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED -> {
+            ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED -> {
                 getLastLocation()
             }
+
             else -> {
                 requestLocationPermission.launch(Manifest.permission.ACCESS_FINE_LOCATION)
             }
@@ -167,23 +247,14 @@ class MainActivity : AppCompatActivity() {
         fusedLocationClient.lastLocation.addOnCompleteListener(this) { task: Task<Location> ->
             if (task.isSuccessful && task.result != null) {
                 latestLocation = task.result
-                Log.d("MainActivity", "Location retrieved: ${latestLocation?.latitude}, ${latestLocation?.longitude}")
+                Log.d(
+                    "MainActivity",
+                    "Location retrieved: ${latestLocation?.latitude}, ${latestLocation?.longitude}"
+                )
             } else {
                 Log.e("MainActivity", "Failed to get location.")
             }
         }
     }
 
-//    private fun showDeleteConfirmationDialog() {
-//        AlertDialog.Builder(this)
-//            .setTitle("Delete all users")
-//            .setMessage("Are you sure you want to delete all users?")
-//            .setPositiveButton("Yes") { _, _ ->
-//                sharedPreferencesHelper.clearUsers()
-//                updateUserSpinner()
-//                Toast.makeText(this, "All users deleted", Toast.LENGTH_SHORT).show()
-//            }
-//            .setNegativeButton("No", null)
-//            .show()
-//    }
 }
