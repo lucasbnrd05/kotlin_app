@@ -1,6 +1,7 @@
 package com.example.imctrack
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -16,7 +17,10 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import org.osmdroid.views.overlay.Polyline
 import org.osmdroid.views.overlay.infowindow.BasicInfoWindow
-
+import android.view.Menu
+import android.view.MenuItem
+import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class OpenStreetMapsActivity : AppCompatActivity() {
@@ -83,6 +87,30 @@ class OpenStreetMapsActivity : AppCompatActivity() {
         addCustomMarker(geoPoint, "My Current Location", android.R.drawable.ic_delete)
         addGymkhanaMarkers(map, gymkhanaCoords, gymkhanaNames, this)
         addRouteMarkers(map, gymkhanaCoords, gymkhanaNames, this)
+
+
+        // Bottom Navigation
+        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_menu)
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.action_back -> {
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.action_zoom_in -> {
+                    map.controller.zoomIn() // Zoom avant
+                    true
+                }
+                R.id.action_zoom_out -> {
+                    map.controller.zoomOut() // Zoom arrière
+                    true
+                }
+
+                else -> false
+            }
+        }
+
     }
 
     private fun addCustomMarker(position: GeoPoint, title: String, iconResId: Int) {
