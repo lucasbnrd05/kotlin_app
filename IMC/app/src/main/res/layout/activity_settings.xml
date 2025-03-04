@@ -7,31 +7,84 @@
     android:layout_height="match_parent"
     tools:context=".SettingsActivity">
 
-    <!-- EditText to input the user identifier -->
-    <EditText
-        android:id="@+id/editTextUserIdentifier"
-        android:layout_width="0dp"
+    <!-- Barre d'outils (Toolbar) -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        android:paddingVertical="8dp"
-        android:hint="Enter User Identifier"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp" />
+        android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
+        tools:ignore="MissingConstraints">
 
-    <!-- Button to save the user identifier -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/blue_primary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:title="Settings"
+            app:titleTextColor="@android:color/white"/>
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <!-- Bouton pour entrer un nouvel ID utilisateur, centré -->
     <Button
-        android:id="@+id/buttonSave"
+        android:id="@+id/userIdentifierButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save"
-        app:layout_constraintTop_toBottomOf="@id/editTextUserIdentifier"
+        android:text="Enter User ID"
+        android:backgroundTint="@color/blue_button"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/deleteUsersButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <!-- EditText pour entrer un nouvel ID utilisateur (initialement masqué) -->
+    <EditText
+        android:id="@+id/newUserEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Enter New User ID"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/userIdentifierButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.4" />
+
+    <!-- Spinner pour afficher les utilisateurs existants -->
+    <Spinner
+        android:id="@+id/userIdentifierSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/blue_button"
+        app:layout_constraintTop_toBottomOf="@id/newUserEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <!-- Bouton pour enregistrer un nouvel utilisateur, seulement visible lorsqu'on entre un nom -->
+    <Button
+        android:id="@+id/saveUserButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save User"
+        android:visibility="gone"
+        android:backgroundTint="@color/blue_button"
+        app:layout_constraintTop_toBottomOf="@id/newUserEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <Button
+        android:id="@+id/deleteUsersButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DELETE"
+        android:backgroundTint="@color/blue_button"
+        app:layout_constraintTop_toBottomOf="@id/saveUserButton"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation_settings"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_settings"
