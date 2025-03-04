@@ -17,9 +17,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import org.osmdroid.views.overlay.Polyline
 import org.osmdroid.views.overlay.infowindow.BasicInfoWindow
-import android.view.Menu
-import android.view.MenuItem
-import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -84,7 +81,7 @@ class OpenStreetMapsActivity : AppCompatActivity() {
         marker.title = "My current location"
         map.overlays.add(marker)*/
 
-        addCustomMarker(geoPoint, "My Current Location", android.R.drawable.ic_delete)
+        addCustomMarker(geoPoint, "My Current Location", R.drawable.ic_here)
         addGymkhanaMarkers(map, gymkhanaCoords, gymkhanaNames, this)
         addRouteMarkers(map, gymkhanaCoords, gymkhanaNames, this)
 
@@ -129,7 +126,7 @@ class OpenStreetMapsActivity : AppCompatActivity() {
             val marker = Marker(map)
             marker.position = coords[i]
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-            marker.icon = ContextCompat.getDrawable(context, android.R.drawable.ic_menu_compass) as BitmapDrawable
+            marker.icon = ContextCompat.getDrawable(context, R.drawable.ic_run)
             marker.title = names[i]
 
             val textView = TextView(context).apply {
@@ -154,7 +151,7 @@ class OpenStreetMapsActivity : AppCompatActivity() {
             val marker = Marker(map)
             marker.position = coords[i]
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-            marker.icon = ContextCompat.getDrawable(context, android.R.drawable.ic_menu_compass) as BitmapDrawable
+            marker.icon = ContextCompat.getDrawable(context, R.drawable.ic_run)
             marker.title = names[i]
             map.overlays.add(marker)
         }
