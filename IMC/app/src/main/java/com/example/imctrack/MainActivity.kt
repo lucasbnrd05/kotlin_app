@@ -59,22 +59,6 @@ class MainActivity : AppCompatActivity() {
         drawerLayout = findViewById(R.id.drawer_layout)
         val navigationView: NavigationView = findViewById(R.id.nav_view)
 
-        // Changer la couleur du texte de l'élément "Settings"
-        val menu = navigationView.menu
-
-        // Configurer le menu du tiroir de navigation
-        navigationView.setNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_settings -> {
-                    // Ouvre l'activité SettingsActivity lorsque l'élément "Settings" est sélectionné
-                    val intent = Intent(this, SettingsActivity::class.java)
-                    startActivity(intent)
-                    drawerLayout.closeDrawer(GravityCompat.START)
-                    true
-                }
-                else -> false
-            }
-        }
 
         // Trouver la BottomNavigationView
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
@@ -150,6 +134,11 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_theme -> {
                 toggleTheme()
+                true
+            }
+            R.id.nav_settings -> {
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
                 true
             }
             else -> super.onOptionsItemSelected(item)
