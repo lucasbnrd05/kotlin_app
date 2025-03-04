@@ -1,124 +1,123 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
-    <!-- Barre d'outils (Toolbar) -->
-    <com.google.android.material.appbar.AppBarLayout
+    <!-- Contenu principal -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
-        tools:ignore="MissingConstraints">
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
 
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <!-- Barre d'outils (Toolbar) -->
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/blue_primary"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:title="EPITIE / IMC Track"
-            app:titleTextColor="@android:color/white"/>
-    </com.google.android.material.appbar.AppBarLayout>
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
+            tools:ignore="MissingConstraints">
 
-    <!-- Bouton pour entrer un nouvel ID utilisateur, centré -->
-    <Button
-        android:id="@+id/userIdentifierButton"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/blue_primary"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:title="EPITIE / IMC Track"
+                app:titleTextColor="@android:color/white"/>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <!-- Bouton pour entrer un nouvel ID utilisateur, centré -->
+        <Button
+            android:id="@+id/userIdentifierButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter User ID"
+            android:backgroundTint="@color/blue_button"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/deleteUsersButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <!-- EditText pour entrer un nouvel ID utilisateur (initialement masqué) -->
+        <EditText
+            android:id="@+id/newUserEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Enter New User ID"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/userIdentifierButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_bias="0.4" />
+
+        <!-- Spinner pour afficher les utilisateurs existants -->
+        <Spinner
+            android:id="@+id/userIdentifierSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue_button"
+            app:layout_constraintTop_toBottomOf="@id/newUserEditText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_bias="0.5" />
+
+        <!-- Bouton pour enregistrer un nouvel utilisateur, seulement visible lorsqu'on entre un nom -->
+        <Button
+            android:id="@+id/saveUserButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save User"
+            android:visibility="gone"
+            android:backgroundTint="@color/blue_button"
+            app:layout_constraintTop_toBottomOf="@id/newUserEditText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_bias="0.5" />
+
+        <!-- Bouton 2 : Carte, centré -->
+        <!-- <Button
+            android:id="@+id/buttonmap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MAP"
+            android:backgroundTint="@color/blue_button"
+            app:layout_constraintTop_toBottomOf="@id/saveUserButton"
+            app:layout_constraintBottom_toTopOf="@id/button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" /> -->
+
+        <!-- Bouton 3 : Collé en bas et centré -->
+        <Button
+            android:id="@+id/deleteUsersButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DELETE"
+            android:backgroundTint="@color/blue_button"
+            app:layout_constraintTop_toBottomOf="@id/saveUserButton"
+            app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:menu="@menu/bottom_nav_menu"
+            tools:ignore="MissingConstraints" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Le tiroir de navigation -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enter User ID"
-        android:backgroundTint="@color/blue_button"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/deleteUsersButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/menu_main" />  <!-- Utilisation de ton menu_main.xml -->
 
-    <!-- EditText pour entrer un nouvel ID utilisateur (initialement masqué) -->
-    <EditText
-        android:id="@+id/newUserEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Enter New User ID"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/userIdentifierButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.4" /> <!-- Ajuste aussi le biais vertical -->
-
-    <!-- Spinner pour afficher les utilisateurs existants -->
-    <Spinner
-        android:id="@+id/userIdentifierSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/blue_button"
-        app:layout_constraintTop_toBottomOf="@id/newUserEditText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.5" /> <!-- Ajuste le biais vertical -->
-
-    <!-- Bouton pour enregistrer un nouvel utilisateur, seulement visible lorsqu'on entre un nom -->
-    <Button
-        android:id="@+id/saveUserButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save User"
-        android:visibility="gone"
-        android:backgroundTint="@color/blue_button"
-        app:layout_constraintTop_toBottomOf="@id/newUserEditText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
-
-    <!-- Bouton 2 : Carte, centré
-    <Button
-        android:id="@+id/buttonmap"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="MAP"
-        android:backgroundTint="@color/blue_button"
-        app:layout_constraintTop_toBottomOf="@id/saveUserButton"
-        app:layout_constraintBottom_toTopOf="@id/button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" /> -->
-
-    <!-- Bouton 3 : Collé en bas et centré -->
-
-
-    <Button
-        android:id="@+id/deleteUsersButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="DELETE"
-        android:backgroundTint="@color/blue_button"
-        app:layout_constraintTop_toBottomOf="@id/saveUserButton"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!--<Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="168dp"
-        android:backgroundTint="@color/blue_button"
-        android:text="NEXT PAGE"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.51"
-        app:layout_constraintStart_toStartOf="parent" /> -->
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_nav_menu"
-        tools:ignore="MissingConstraints" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.drawerlayout.widget.DrawerLayout>
