@@ -24,6 +24,8 @@
             app:titleTextColor="@android:color/white"/>
     </com.google.android.material.appbar.AppBarLayout>
 
+
+
     <!-- Height input -->
     <EditText
         android:id="@+id/editHeight"
