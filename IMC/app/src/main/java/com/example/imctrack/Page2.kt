@@ -35,6 +35,7 @@ class Page2 : AppCompatActivity() {
         val weightEditText: EditText = findViewById(R.id.editWeight)
         val calculateButton: Button = findViewById(R.id.calculateBMI)
         val resultTextView: TextView = findViewById(R.id.resultBMI)
+        val adviceTextView: TextView = findViewById(R.id.adviceTextView)
 
         // Button click to calculate BMI
         calculateButton.setOnClickListener {
@@ -58,7 +59,21 @@ class Page2 : AppCompatActivity() {
 
             // Display BMI result
             resultTextView.text = "Your BMI is: %.2f".format(bmi)
+
+            // Provide advice based on BMI result
+            val advice = when {
+                bmi < 18.5 -> "Underweight. It's recommended to consult a doctor to improve your nutrition."
+                bmi in 18.5..24.9 -> "Normal weight. Keep maintaining a healthy lifestyle with balanced eating and exercise."
+                bmi in 25.0..29.9 -> "Overweight. Try adopting a more balanced diet and regular physical activity."
+                bmi in 30.0..34.9 -> "Moderate obesity. It's important to consult a healthcare professional to create a plan for action."
+                bmi in 35.0..39.9 -> "Severe obesity. Medical follow-up is strongly recommended for weight management."
+                else -> "Morbid or massive obesity. It's crucial to consult a doctor to assess treatment options."
+            }
+
+            // Display the advice
+            adviceTextView.text = advice
         }
+
 
         // Bottom Navigation
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)

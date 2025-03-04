@@ -32,12 +32,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var latestLocation: Location? = null
     private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
-    private lateinit var userIdentifierButton: Button
-    private lateinit var saveUserButton: Button
-    private lateinit var deleteUsersButton: Button
-    private lateinit var newUserEditText: EditText
-    private lateinit var userIdentifierSpinner: Spinner
-    private var usersList = mutableListOf<String>()
+//    private lateinit var userIdentifierButton: Button
+//    private lateinit var saveUserButton: Button
+//    private lateinit var deleteUsersButton: Button
+//    private lateinit var newUserEditText: EditText
+//    private lateinit var userIdentifierSpinner: Spinner
+//    private var usersList = mutableListOf<String>()
     private lateinit var drawerLayout: DrawerLayout
 
     private val requestLocationPermission =
@@ -59,7 +59,6 @@ class MainActivity : AppCompatActivity() {
         drawerLayout = findViewById(R.id.drawer_layout)
         val navigationView: NavigationView = findViewById(R.id.nav_view)
 
-
         // Trouver la BottomNavigationView
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
         bottomNavigationView.visibility = View.VISIBLE
@@ -69,34 +68,6 @@ class MainActivity : AppCompatActivity() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         requestLocationPermission()
 
-        userIdentifierButton = findViewById(R.id.userIdentifierButton)
-        newUserEditText = findViewById(R.id.newUserEditText)
-        saveUserButton = findViewById(R.id.saveUserButton)
-        userIdentifierSpinner = findViewById(R.id.userIdentifierSpinner)
-        deleteUsersButton = findViewById(R.id.deleteUsersButton)
-
-        userIdentifierButton.setOnClickListener {
-            newUserEditText.visibility = View.VISIBLE
-            saveUserButton.visibility = View.VISIBLE
-        }
-
-        saveUserButton.setOnClickListener {
-            val newUserName = newUserEditText.text.toString().trim()
-            if (newUserName.isNotEmpty()) {
-                sharedPreferencesHelper.addUser(newUserName)
-                updateUserSpinner()
-                newUserEditText.text.clear()
-                newUserEditText.visibility = View.GONE
-                saveUserButton.visibility = View.GONE
-                Toast.makeText(this, "User saved: $newUserName", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Please enter a valid username", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        deleteUsersButton.setOnClickListener {
-            showDeleteConfirmationDialog()
-        }
 
         // Gestion de la sélection dans la BottomNavigationView
         bottomNavigationView.setOnItemSelectedListener { item ->
@@ -167,18 +138,18 @@ class MainActivity : AppCompatActivity() {
         return super.onPrepareOptionsMenu(menu)
     }
 
-    private fun updateUserSpinner() {
-        val usersSet = sharedPreferencesHelper.getUsers()
-        usersList = usersSet.toMutableList()
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, usersList)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        userIdentifierSpinner.adapter = adapter
-    }
+//    private fun updateUserSpinner() {
+//        val usersSet = sharedPreferencesHelper.getUsers()
+//        usersList = usersSet.toMutableList()
+//        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, usersList)
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//        userIdentifierSpinner.adapter = adapter
+//    }
 
-    override fun onResume() {
-        super.onResume()
-        updateUserSpinner()
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        updateUserSpinner()
+//    }
 
     private fun requestLocationPermission() {
         when {
@@ -203,16 +174,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun showDeleteConfirmationDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("Delete all users")
-            .setMessage("Are you sure you want to delete all users?")
-            .setPositiveButton("Yes") { _, _ ->
-                sharedPreferencesHelper.clearUsers()
-                updateUserSpinner()
-                Toast.makeText(this, "All users deleted", Toast.LENGTH_SHORT).show()
-            }
-            .setNegativeButton("No", null)
-            .show()
-    }
+//    private fun showDeleteConfirmationDialog() {
+//        AlertDialog.Builder(this)
+//            .setTitle("Delete all users")
+//            .setMessage("Are you sure you want to delete all users?")
+//            .setPositiveButton("Yes") { _, _ ->
+//                sharedPreferencesHelper.clearUsers()
+//                updateUserSpinner()
+//                Toast.makeText(this, "All users deleted", Toast.LENGTH_SHORT).show()
+//            }
+//            .setNegativeButton("No", null)
+//            .show()
+//    }
 }
