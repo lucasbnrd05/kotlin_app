@@ -92,6 +92,11 @@ class Page2 : AppCompatActivity() {
                 toggleTheme()
                 true
             }
+            R.id.nav_settings -> {
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
