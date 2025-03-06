@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- En-têtes du tableau -->
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp">
+        <TableRow>
+            <TextView
+                android:text="Date"
+                android:textSize="16sp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"/>
+            <TextView
+                android:text="Place"
+                android:textSize="16sp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"/>
+            <TextView
+                android:text="Latitude"
+                android:textSize="16sp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"/>
+            <TextView
+                android:text="Longitude"
+                android:textSize="16sp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"/>
+        </TableRow>
+    </TableLayout>
+
+    <!-- TableLayout pour afficher les données dynamiquement -->
+    <TableLayout
+        android:id="@+id/tlCoordinates"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </TableLayout>
+
+
+</LinearLayout>
