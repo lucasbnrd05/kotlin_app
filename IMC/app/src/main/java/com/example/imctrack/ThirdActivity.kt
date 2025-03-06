@@ -14,8 +14,15 @@ class ThirdActivity : AppCompatActivity() {
         setContentView(R.layout.activity_third)
 
         // Récupérer les données passées par l'Intent
-        val latitude = intent.getStringExtra("LATITUDE")
-        val longitude = intent.getStringExtra("LONGITUDE")
+        var latitude = intent.getStringExtra("LATITUDE")
+        var longitude = intent.getStringExtra("LONGITUDE")
+
+// Si les données sont nulles, tu peux afficher un message de débogage
+        if (latitude == null || longitude == null) {
+
+            latitude = 40.389683644051864.toString()
+            longitude = (-3.627825356970311).toString()
+        }
 
         // Initialiser les TextViews
         val latitudeTextView: TextView = findViewById(R.id.tvLatitude)
