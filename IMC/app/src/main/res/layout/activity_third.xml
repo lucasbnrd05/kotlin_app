@@ -1,27 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-    <!-- TextView pour afficher la latitude -->
-    <TextView
-        android:id="@+id/tvLatitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Latitude: "
-        android:textSize="18sp"
-        android:padding="8dp" />
+    <!-- Conteneur principal -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <!-- TextView pour afficher la longitude -->
-    <TextView
-        android:id="@+id/tvLongitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Longitude: "
-        android:textSize="18sp"
-        android:padding="8dp" />
+        <!-- Contenu principal avec latitude et longitude centré -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center">
 
+            <!-- TextView pour afficher la latitude -->
+            <TextView
+                android:id="@+id/tvLatitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Latitude: "
+                android:textSize="18sp"
+                android:padding="8dp" />
 
-</LinearLayout>
+            <!-- TextView pour afficher la longitude -->
+            <TextView
+                android:id="@+id/tvLongitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Longitude: "
+                android:textSize="18sp"
+                android:padding="8dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="16dp"/>
+
+        </FrameLayout>
+
+        <!-- Bottom Navigation View collée en bas -->
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation_third"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menu="@menu/bottom_menu_third"/>
+
+    </LinearLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>

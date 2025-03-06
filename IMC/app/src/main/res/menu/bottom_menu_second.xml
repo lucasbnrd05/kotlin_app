@@ -4,10 +4,10 @@
 
     <item
         android:id="@+id/nav_home"
-        android:icon="@drawable/ic_home"
-        android:title="Home" />
+        android:icon="@drawable/ic_left"
+        android:title="Previous" />
     <item
         android:id="@+id/info"
         android:icon="@drawable/ic_info"
-        android:title="Infos" />
+        android:title="Position" />
 </menu>

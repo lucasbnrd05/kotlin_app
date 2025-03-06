@@ -2,6 +2,7 @@ package com.example.imctrack
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
@@ -74,17 +75,41 @@ class SecondActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation_second)
+        bottomNavigationView.visibility = View.VISIBLE
+
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    // Naviguer vers MainActivity
+                    val intent = Intent(this, SettingsActivity::class.java)
+                    startActivity(intent)
+                    return@setOnItemSelectedListener true
+
+                }
+                R.id.info -> {
+
+                    val intent = Intent(this, ThirdActivity::class.java)
+                    startActivity(intent)
+                    return@setOnItemSelectedListener true
+
+
+                }
+                else -> false
+            }
+        }
+
 
     }
+    // Classe pour stocker les données des lieux
+    data class LocationData(
+        val date: String,
+        val name: String,        // Nom du lieu
+        val latitude: String,
+        val longitude: String
+    )
 }
 
 
 
 
-// Classe pour stocker les données des lieux
-data class LocationData(
-    val date: String,
-    val name: String,        // Nom du lieu
-    val latitude: String,
-    val longitude: String
-)

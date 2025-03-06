@@ -97,6 +97,13 @@ class SettingsActivity : AppCompatActivity() {
                     startActivity(intent)
                     true
                 }
+                R.id.info -> {
+                    val intent = Intent(this, SecondActivity::class.java)
+                    startActivity(intent)
+                    true
+
+
+                }
                 else -> false
             }
         }
