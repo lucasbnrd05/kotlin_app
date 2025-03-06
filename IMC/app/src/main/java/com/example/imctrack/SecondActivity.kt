@@ -88,9 +88,12 @@ class SecondActivity : AppCompatActivity() {
 
                 }
                 R.id.info -> {
-
                     val intent = Intent(this, ThirdActivity::class.java)
+                    intent.putExtra("LATITUDE", 40.389683644051864)  // latitudeValue est la valeur de latitude
+                    intent.putExtra("LONGITUDE", -3.627825356970311)  // longitudeValue est la valeur de longitude
                     startActivity(intent)
+
+
                     return@setOnItemSelectedListener true
 
 

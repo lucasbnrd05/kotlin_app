@@ -18,26 +18,34 @@
             android:layout_weight="1"
             android:gravity="center">
 
-            <!-- TextView pour afficher la latitude -->
-            <TextView
-                android:id="@+id/tvLatitude"
+            <!-- LinearLayout pour empiler les TextViews verticalement -->
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Latitude: "
-                android:textSize="18sp"
-                android:padding="8dp" />
+                android:layout_height="wrap_content">
 
-            <!-- TextView pour afficher la longitude -->
-            <TextView
-                android:id="@+id/tvLongitude"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Longitude: "
-                android:textSize="18sp"
-                android:padding="8dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="16dp"/>
+                <!-- TextView pour afficher la latitude -->
+                <TextView
+                    android:id="@+id/tvLatitude"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Latitude: "
+                    android:textSize="18sp"
+                    android:padding="8dp"
+                    android:textColor="@android:color/black" />
 
+                <!-- TextView pour afficher la longitude -->
+                <TextView
+                    android:id="@+id/tvLongitude"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Longitude: "
+                    android:textSize="18sp"
+                    android:padding="8dp"
+                    android:textColor="@android:color/black" />
+
+            </LinearLayout>
         </FrameLayout>
 
         <!-- Bottom Navigation View collée en bas -->
