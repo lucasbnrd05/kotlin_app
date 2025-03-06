@@ -9,8 +9,7 @@ import android.widget.TextView
 
 class LocationAdapter(
     private val context: Context,
-    private val dataList: List<LocationData>
-) : BaseAdapter() {
+    private val dataList: List<SecondActivity.LocationData>) : BaseAdapter() {
 
     override fun getCount(): Int {
         return dataList.size

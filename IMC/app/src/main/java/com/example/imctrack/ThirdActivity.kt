@@ -1,8 +1,11 @@
 package com.example.imctrack
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ThirdActivity : AppCompatActivity() {
 
@@ -21,5 +24,20 @@ class ThirdActivity : AppCompatActivity() {
         // Afficher les données dans les TextViews
         latitudeTextView.text = "Latitude: $latitude"
         longitudeTextView.text = "Longitude: $longitude"
+
+
+        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation_third)
+
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    val intent = Intent(this, SecondActivity::class.java)
+                    startActivity(intent)
+                    return@setOnItemSelectedListener true
+                }
+                else -> false
+            }
+        }
+
     }
 }

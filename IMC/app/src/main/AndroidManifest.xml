@@ -41,6 +41,8 @@
         <activity
             android:name=".SettingsActivity"
             android:exported="true" />
+        <activity android:name=".SecondActivity" />
+        <activity android:name=".ThirdActivity" />
     </application>
 
 </manifest>
