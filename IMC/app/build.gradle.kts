@@ -49,4 +49,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation("com.google.code.gson:gson:2.10.1")
 
+    implementation(libs.mpandroidchart)
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
 }

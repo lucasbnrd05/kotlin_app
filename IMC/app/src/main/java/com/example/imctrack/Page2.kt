@@ -17,6 +17,11 @@ import com.example.imctrack.R
 import com.example.imctrack.SharedPreferencesHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
+
 class Page2 : AppCompatActivity() {
 
     private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
@@ -56,6 +61,30 @@ class Page2 : AppCompatActivity() {
             // Calculate BMI (height is in cm, so convert to meters)
             val heightInMeters = height / 100
             val bmi = weight / (heightInMeters * heightInMeters)
+
+            ////////////////////////////////////////
+            val sharedPrefs = getSharedPreferences("IMC_TRACKER", MODE_PRIVATE)
+            val editor = sharedPrefs.edit()
+
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val currentDate = dateFormat.format(Date())
+
+            val existingHeights = sharedPrefs.getString("HEIGHT_LIST", "") ?: ""
+            val existingWeights = sharedPrefs.getString("WEIGHT_LIST", "") ?: ""
+            val existingBmi = sharedPrefs.getString("BMI_LIST", "") ?: ""
+            val existingDates = sharedPrefs.getString("DATE_LIST", "") ?: ""
+
+            val updatedHeights = if (existingHeights.isEmpty()) "$height" else "$existingHeights,$height"
+            val updatedWeights = if (existingWeights.isEmpty()) "$weight" else "$existingWeights,$weight"
+            val updatedBmi = if (existingBmi.isEmpty()) "$bmi" else "$existingBmi,$bmi"
+            val updatedDates = if (existingDates.isEmpty()) currentDate else "$existingDates,$currentDate"
+
+            editor.putString("HEIGHT_LIST", updatedHeights)
+            editor.putString("WEIGHT_LIST", updatedWeights)
+            editor.putString("BMI_LIST", updatedBmi)
+            editor.putString("DATE_LIST", updatedDates)
+            editor.apply()
+            /////////////////////////////////////////
 
             // Display BMI result
             resultTextView.text = "Your BMI is: %.2f".format(bmi)
