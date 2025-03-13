@@ -2,9 +2,13 @@ package com.example.imctrack
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -95,6 +99,23 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
+        // Récupérer l'utilisateur sélectionné depuis l'Intent
+        val selectedUser = intent.getStringExtra("selectedUser")
+
+        if (selectedUser != null) {
+            val apiKey = getApiKey(selectedUser)
+
+            // Afficher la clé API
+            val apiKeyTextView: TextView = findViewById(R.id.api_key_text_view)
+            if (apiKey.isNullOrEmpty()) {
+                apiKeyTextView.text = "Clé API non trouvée"
+            } else {
+                apiKeyTextView.text = "Clé API: $apiKey"
+            }
+            apiKeyTextView.visibility = View.VISIBLE
+        }
+
         objectivesSection = findViewById(R.id.objectives_container)
         addGoalButton = findViewById(R.id.add_goal_button)
 
@@ -181,7 +202,10 @@ class MainActivity : AppCompatActivity() {
 
 
 
-
+    private fun getApiKey(userName: String): String? {
+        val sharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("API_KEY_$userName", null)
+    }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true

@@ -52,6 +52,9 @@ class SharedPreferencesHelper(context: Context) {
             emptyList()
         }
     }
+    fun clearAPI() {
+        sharedPreferences.edit().remove("API_KEY").apply()
+    }
 
     fun clearGoals() {
         sharedPreferences.edit().remove("user_goals").apply()

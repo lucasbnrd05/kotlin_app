@@ -4,4 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue_primary">#1565C0</color> <!-- Bleu vif -->
     <color name="blue_button">#2196F3</color> <!-- Bleu vif -->
+    <color name="red_button">#F3212B</color> <!-- Bleu vif -->
+
 </resources>
