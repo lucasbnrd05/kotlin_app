@@ -23,12 +23,25 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 
+import com.github.mikephil.charting.charts.RadarChart
+import com.github.mikephil.charting.data.RadarData
+import com.github.mikephil.charting.data.RadarDataSet
+import com.github.mikephil.charting.data.RadarEntry
+import com.github.mikephil.charting.components.YAxis
+
 class Page3 : AppCompatActivity() {
 
     private lateinit var sharedPreferencesHelper: SharedPreferencesHelper
     private lateinit var lineChart: LineChart
+    private lateinit var radarChart: RadarChart
+    private var sportValues = mutableListOf(1f, 1f, 1f, 1f, 1f, 1f, 1f)
+    private val sports = listOf("Tennis", "Football", "Basket", "Handball", "Workout", "Running", "Swimming")
+
+    private var radVal =  30f;
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        loadRadarChartData()
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.page3)
@@ -37,6 +50,17 @@ class Page3 : AppCompatActivity() {
 
         val lineChart: LineChart = findViewById(R.id.lineChart)
         setupLineChart(lineChart)
+
+        radarChart = findViewById(R.id.radarChart)
+        setupRadarChart()
+
+        findViewById<Button>(R.id.btn_tennis).setOnClickListener { updateSportValue(0) }
+        findViewById<Button>(R.id.btn_football).setOnClickListener { updateSportValue(1) }
+        findViewById<Button>(R.id.btn_basket).setOnClickListener { updateSportValue(2) }
+        findViewById<Button>(R.id.btn_handball).setOnClickListener { updateSportValue(3) }
+        findViewById<Button>(R.id.btn_workout).setOnClickListener { updateSportValue(4) }
+        findViewById<Button>(R.id.btn_course).setOnClickListener { updateSportValue(5) }
+        findViewById<Button>(R.id.btn_piscine).setOnClickListener { updateSportValue(6) }
 
         /*val clearDataButton: Button = findViewById(R.id.clearDataButton)
         clearDataButton.setOnClickListener {
@@ -78,6 +102,64 @@ class Page3 : AppCompatActivity() {
         }
 
     }
+
+    ////////////////////////////////////////  Radar Chart //////////////////////////////////////////
+
+    private fun setupRadarChart() {
+        radarChart = findViewById(R.id.radarChart)
+
+        // Configuration du RadarChart
+        radarChart.xAxis.valueFormatter = IndexAxisValueFormatter(sports)
+        radarChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+        radarChart.xAxis.textSize = 12f
+        radarChart.yAxis.setLabelCount(5, true)
+        radarChart.yAxis.axisMinimum = 0f
+        radarChart.yAxis.axisMaximum = radVal
+        radarChart.description.text = ""
+
+        updateRadarChart()
+    }
+
+
+    private fun updateRadarChart() {
+        val entries = sportValues.map { RadarEntry(it) }
+        val dataSet = RadarDataSet(entries, "Activité Sportive").apply {
+            color = getColor(android.R.color.holo_blue_light)
+            fillColor = getColor(android.R.color.holo_blue_light)
+            setDrawFilled(true)
+        }
+
+        radarChart.data = RadarData(dataSet)
+        radarChart.invalidate()
+    }
+
+    private fun updateSportValue(index: Int) {
+        if (sportValues[index] < radVal) sportValues[index] += 1f
+        updateRadarChart()
+    }
+
+    private fun saveRadarChartData() {
+        val sharedPrefs = getSharedPreferences("RADAR_CHART_DATA", MODE_PRIVATE)
+        val editor = sharedPrefs.edit()
+        editor.putString("SPORT_VALUES", sportValues.joinToString(","))
+        editor.apply()
+    }
+
+    private fun loadRadarChartData() {
+        val sharedPrefs = getSharedPreferences("RADAR_CHART_DATA", MODE_PRIVATE)
+        val savedValues = sharedPrefs.getString("SPORT_VALUES", null)
+
+        if (savedValues != null) {
+            sportValues = savedValues.split(",").map { it.toFloat() }.toMutableList()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        saveRadarChartData()
+    }
+
+    //////////////////////////////////////// Line Chart ////////////////////////////////////////////
 
     private fun setupLineChart(lineChart: LineChart) {
 
@@ -135,12 +217,10 @@ class Page3 : AppCompatActivity() {
         val bmiValues = bmiString.split(",").map { it.toFloat() }
         val dates = datesString.split(",")
 
-        // Créer les entrées pour chaque courbe
         val heightEntries = heights.mapIndexed { index, height -> Entry(index.toFloat(), height) }
         val weightEntries = weights.mapIndexed { index, weight -> Entry(index.toFloat(), weight) }
         val bmiEntries = bmiValues.mapIndexed { index, bmi -> Entry(index.toFloat(), bmi) }
 
-        // Créer les datasets pour chaque courbe
         val heightDataSet = LineDataSet(heightEntries, "Height (cm)").apply {
             color = getColor(android.R.color.holo_blue_dark)
             valueTextColor = getColor(android.R.color.black)
@@ -162,10 +242,7 @@ class Page3 : AppCompatActivity() {
             circleRadius = 4f
         }
 
-        // Créer la LineData avec les trois datasets
         val lineData = LineData(heightDataSet, weightDataSet, bmiDataSet)
-
-        // Appliquer la LineData au LineChart
         lineChart.data = lineData
 
 
@@ -186,6 +263,13 @@ class Page3 : AppCompatActivity() {
         sharedPrefs.edit().remove("HEIGHT_LIST").apply()
         sharedPrefs.edit().remove("WEIGHT_LIST").apply()
         sharedPrefs.edit().remove("BMI_LIST").apply()
+
+         ////////////////////// RESET LES DONNÉES DU RADAR CHART////////////////////////////////////
+        val radarPrefs = getSharedPreferences("RADAR_CHART_DATA", MODE_PRIVATE)
+        radarPrefs.edit().remove("SPORT_VALUES").apply()
+        sportValues = mutableListOf(1f, 1f, 1f, 1f, 1f, 1f, 1f)
+        updateRadarChart()
+        ////////////////////////////////////////////////////////////////////////////////////////////
 
         Toast.makeText(this, "Data reset !", Toast.LENGTH_SHORT).show()
 
