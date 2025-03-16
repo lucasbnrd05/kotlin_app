@@ -10,4 +10,5 @@
         android:id="@+id/info"
         android:icon="@drawable/ic_info"
         android:title="Position" />
+
 </menu>

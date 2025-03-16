@@ -7,11 +7,13 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
@@ -33,6 +35,7 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var selectUserButton: Button
     private lateinit var editTextApiKey: EditText
     private var usersList = mutableListOf<String>()
+    private lateinit var apiKeyTextView: TextView
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,6 +65,8 @@ class SettingsActivity : AppCompatActivity() {
         userIdentifierSpinner = findViewById(R.id.userIdentifierSpinner)
         deleteUsersButton = findViewById(R.id.deleteUsersButton)
         selectUserButton = findViewById(R.id.selectUserButton)
+        apiKeyTextView = findViewById(R.id.apiKeyTextView) // Initialise le TextView
+        updateApiKeyTextView()
 
         // Configuration initiale de la visibilité
         newUserEditText.visibility = View.GONE
@@ -70,6 +75,7 @@ class SettingsActivity : AppCompatActivity() {
 
         // Mise à jour du Spinner avec les utilisateurs existants
         updateUserSpinner()
+
 
         // Gestion du clic sur le bouton "Enter User ID"
         userIdentifierButton.setOnClickListener {
@@ -95,14 +101,12 @@ class SettingsActivity : AppCompatActivity() {
                 val sharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
                 sharedPreferences.edit().apply {
                     putString("userIdentifier", newUserName)
-                    putString("API_KEY_$newUserName", newApiKey)
-                    apply()
-                }
+                    putString("API_KEY", newApiKey)
+                }.apply()
 
                 Toast.makeText(this, "User saved: $newUserName", Toast.LENGTH_SHORT).show()
-
+                updateApiKeyTextView() // Met à jour l'affichage de la clé API
                 val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra("selectedUser", newUserName)
                 startActivity(intent)
             } else {
                 Toast.makeText(this, "Please enter a valid username and API key", Toast.LENGTH_SHORT).show()
@@ -117,8 +121,9 @@ class SettingsActivity : AppCompatActivity() {
         // Gestion du clic sur le bouton "Select User"
         selectUserButton.setOnClickListener {
             val selectedUser = userIdentifierSpinner.selectedItem.toString()
+            val sharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+            sharedPreferences.edit().putString("userIdentifier", selectedUser).apply()
             val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("selectedUser", selectedUser)
             startActivity(intent)
         }
 
@@ -162,6 +167,17 @@ class SettingsActivity : AppCompatActivity() {
             .setPositiveButton("Yes") { _, _ ->
                 sharedPreferencesHelper.clearUsers()
                 sharedPreferencesHelper.clearAPI()
+                val sharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+                sharedPreferences.edit().putString("API_KEY", "No Api key").apply()
+
+                // Ajoute ceci :
+                resetDatabase()
+                apiKeyTextView.text = "No Api key" // Vider le textview
+
+                editTextApiKey.clearFocus() //Retirer la focus de l'edittext
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(editTextApiKey.windowToken, 0)
+
                 updateUserSpinner()
                 selectUserButton.visibility = View.GONE
                 Toast.makeText(this, "All users deleted", Toast.LENGTH_SHORT).show()
@@ -169,6 +185,21 @@ class SettingsActivity : AppCompatActivity() {
             .setNegativeButton("No", null)
             .show()
     }
+
+    // Met à jour le TextView avec la clé API (ou un message vide)
+    private fun updateApiKeyTextView() {
+        val sharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        val apiKey = sharedPreferences.getString("API_KEY", "")
+        apiKeyTextView.text = if (!apiKey.isNullOrEmpty())  "Clé API: $apiKey" else "No Api key"
+    }
+    // Ajoute cette fonction à SettingsActivity :
+    private fun resetDatabase() {
+        val sharedPreferences = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("isDatabaseInitialized", false)
+        editor.apply()
+    }
+
 
     // Fonction pour mettre à jour le Spinner avec les utilisateurs existants
     private fun updateUserSpinner() {
@@ -228,5 +259,6 @@ class SettingsActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         updateUserSpinner()
+        updateApiKeyTextView()
     }
 }

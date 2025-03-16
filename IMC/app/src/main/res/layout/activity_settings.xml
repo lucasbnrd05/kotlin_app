@@ -8,20 +8,30 @@
     tools:context=".SettingsActivity">
 
     <!-- Barre d'outils (Toolbar) -->
-    <com.google.android.material.appbar.AppBarLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/blue_primary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:title="Settings"
+        app:titleTextColor="@android:color/white"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/blue_primary"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:title="Settings"
-            app:titleTextColor="@android:color/white" />
-    </com.google.android.material.appbar.AppBarLayout>
+    <!-- TextView pour afficher la clé API -->
+    <TextView
+        android:id="@+id/apiKeyTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Clé API: [numéro]" /> <!-- Pour le design, remplacez [numéro] -->
 
     <!-- Bouton pour entrer un nouvel ID utilisateur -->
     <Button
@@ -35,7 +45,7 @@
         android:backgroundTint="@color/blue_button"
         android:textColor="@android:color/white"
         android:elevation="4dp"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintTop_toBottomOf="@id/apiKeyTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -63,15 +73,16 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
         android:backgroundTint="@color/blue_button"
         android:popupBackground="@color/blue_button"
         android:spinnerMode="dropdown"
         android:visibility="visible"
-        app:layout_constraintTop_toBottomOf="@id/newUserEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/newUserEditText" />
 
     <!-- EditText pour entrer la clé API -->
     <EditText
@@ -149,5 +160,7 @@
         android:layout_height="wrap_content"
         android:background="@color/blue_primary"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_menu_settings" />
+        app:menu="@menu/bottom_menu_settings"
+        tools:layout_editor_absoluteX="0dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
