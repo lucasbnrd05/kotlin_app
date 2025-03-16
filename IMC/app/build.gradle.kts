@@ -72,4 +72,7 @@ dependencies {
     implementation(libs.mpandroidchart)
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
+    implementation(libs.zxing.android.embedded)
+    //implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+    implementation(libs.okhttp)
 }

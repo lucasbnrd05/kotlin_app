@@ -33,6 +33,7 @@
         <activity android:name=".Page2" />
         <!-- Déclarez Page3 -->
         <activity android:name=".Page3" />
+        <activity android:name=".Page4" />
         <activity
             android:name=".OpenStreetMapsActivity"
             android:exported="false" />
@@ -43,6 +44,11 @@
             android:exported="true" />
         <activity android:name=".SecondActivity" />
         <activity android:name=".ThirdActivity" />
+
+        <activity android:name=".CustomScannerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
     </application>
 
 </manifest>
