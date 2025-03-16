@@ -2,13 +2,21 @@ package com.example.imctrack
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.example.imctrack.data.local.AppDatabase
+import com.example.imctrack.data.local.CoordinatesEntity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.view.Gravity
+import android.widget.LinearLayout
 
 class SecondActivity : AppCompatActivity() {
 
@@ -16,68 +24,8 @@ class SecondActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_second)
 
-        // Liste des lieux avec leurs coordonnées
-        val locations = listOf(
-            "Tennis" to "40.38779608214728, -3.627687914352839",
-            "Futsal outdoors" to "40.38788595319803, -3.627048250272035",
-            "Fashion and design school" to "40.3887315224542, -3.628643539758645",
-            "Topography school" to "40.38926842612264, -3.630067893975619",
-            "Telecommunications school" to "40.38956358584258, -3.629046081389352",
-            "ETSISI" to "40.38992125672989, -3.6281366497769714",
-            "Library" to "40.39037466191718, -3.6270256763598447",
-            "CITSEM" to "40.389855884803005, -3.626782180787362"
-        )
-
-        // Obtenez le TableLayout
-        val tableLayout: TableLayout = findViewById(R.id.tlCoordinates)
-
-        // Ajouter dynamiquement les lignes au tableau
-        locations.forEach { (name, coords) ->
-            val (latitude, longitude) = coords.split(", ")
-
-            // Crée une nouvelle ligne de tableau
-            val tableRow = TableRow(this)
-
-            // Crée et ajoute les TextViews pour chaque cellule
-            val dateTextView = TextView(this)
-            dateTextView.text = "05/03/2025"  // Remplacez par la date dynamique si nécessaire
-            dateTextView.setPadding(16, 16, 16, 16)
-            dateTextView.layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
-            tableRow.addView(dateTextView)
-
-            val nameTextView = TextView(this)
-            nameTextView.text = name
-            nameTextView.setPadding(16, 16, 16, 16)
-            nameTextView.layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
-            tableRow.addView(nameTextView)
-
-            val latitudeTextView = TextView(this)
-            latitudeTextView.text = latitude
-            latitudeTextView.setPadding(16, 16, 16, 16)
-            latitudeTextView.layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
-            tableRow.addView(latitudeTextView)
-
-            val longitudeTextView = TextView(this)
-            longitudeTextView.text = longitude
-            longitudeTextView.setPadding(16, 16, 16, 16)
-            longitudeTextView.layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
-            tableRow.addView(longitudeTextView)
-
-            // Ajouter la ligne au TableLayout
-            tableLayout.addView(tableRow)
-
-            // Ajouter un listener de clic à chaque ligne
-            tableRow.setOnClickListener {
-                // Passer les données (latitude, longitude) à ThirdActivity
-                val intent = Intent(this, ThirdActivity::class.java)
-                intent.putExtra("LATITUDE", latitude)
-                intent.putExtra("LONGITUDE", longitude)
-                startActivity(intent)
-            }
-        }
-        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation_second)
-        bottomNavigationView.visibility = View.VISIBLE
-
+        // Configurer la Bottom Navigation
+        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation_third)
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
@@ -85,34 +33,95 @@ class SecondActivity : AppCompatActivity() {
                     val intent = Intent(this, SettingsActivity::class.java)
                     startActivity(intent)
                     return@setOnItemSelectedListener true
-
-                }
-                R.id.info -> {
-                    val intent = Intent(this, ThirdActivity::class.java)
-                    intent.putExtra("LATITUDE", 40.389683644051864)  // latitudeValue est la valeur de latitude
-                    intent.putExtra("LONGITUDE", -3.627825356970311)  // longitudeValue est la valeur de longitude
-                    startActivity(intent)
-
-
-                    return@setOnItemSelectedListener true
-
-
                 }
                 else -> false
             }
         }
 
+        // Obtenez le TableLayout
+        val tableLayout: TableLayout = findViewById(R.id.tlCoordinates)
 
+        // Afficher dynamiquement les lignes au tableau
+        lifecycleScope.launch {
+            try {
+                Log.d("SecondActivity", "Starting data loading...")
+                val db = AppDatabase.getDatabase(this@SecondActivity)
+                Log.d("SecondActivity", "Database instance obtained")
+                val lieuDao = db.coordinatesDao()
+                Log.d("SecondActivity", "LieuDao instance obtained")
+                val locations = withContext(Dispatchers.IO) { lieuDao.getAll() }
+                Log.d("SecondActivity", "Number of locations: ${locations.size}")
+                locations.forEach {
+                    Log.d("SecondActivity", "Location: Name=${it.name}, Latitude=${it.latitude}, Longitude=${it.longitude}")
+                }
+
+                // Ajoute les en-têtes au tableau
+                addTableHeader(tableLayout)
+
+                // Ajouter dynamiquement les lignes au tableau
+                locations.forEachIndexed { index, location ->
+                    val tableRow = TableRow(this@SecondActivity)
+
+                    // Crée et ajoute les TextViews pour chaque cellule
+                    val nameTextView = createTextView(location.name)
+                    val latitudeTextView = createTextView(location.latitude.toString())
+                    val longitudeTextView = createTextView(location.longitude.toString())
+
+                    tableRow.addView(nameTextView)
+                    tableRow.addView(latitudeTextView)
+                    tableRow.addView(longitudeTextView)
+
+                    // Ajouter un listener de clic à chaque ligne
+                    tableRow.setOnClickListener {
+                        // Passe l'ID à ThirdActivity
+                        val intent = Intent(this@SecondActivity, ThirdActivity::class.java)
+                        intent.putExtra("LOCATION", location)  // Transmets l'objet CoordinatesEntity
+                        // Réutilise l'instance de ThirdActivity si elle existe
+                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        startActivity(intent)
+                    }
+
+                    tableLayout.addView(tableRow)
+                }
+            } catch (e: Exception) {
+                Log.e("SecondActivity", "Error loading data", e)
+                Toast.makeText(this@SecondActivity, "Error loading data", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
-    // Classe pour stocker les données des lieux
-    data class LocationData(
-        val date: String,
-        val name: String,        // Nom du lieu
-        val latitude: String,
-        val longitude: String
-    )
+
+    private fun addTableHeader(tableLayout: TableLayout) {
+        // Ajoute les en-têtes au tableau
+        val tableHeader = TableRow(this)
+
+        val nameHeader = createHeaderTextView("Name")
+        val latitudeHeader = createHeaderTextView("Latitude")
+        val longitudeHeader = createHeaderTextView("Longitude")
+
+        tableHeader.addView(nameHeader)
+        tableHeader.addView(latitudeHeader)
+        tableHeader.addView(longitudeHeader)
+
+        tableLayout.addView(tableHeader)
+    }
+
+    private fun createTextView(text: String): TextView {
+        return TextView(this).apply {
+            this.text = text
+            setPadding(16, 16, 16, 16)
+            layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
+            gravity = Gravity.CENTER
+        }
+    }
+
+    private fun createHeaderTextView(text: String): TextView {
+        return TextView(this).apply {
+            this.text = text
+            textSize = 18f
+            setTypeface(android.graphics.Typeface.DEFAULT_BOLD)
+            setPadding(16, 16, 16, 16)
+            layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
+            gravity = Gravity.CENTER
+        }
+    }
 }
-
-
-
-

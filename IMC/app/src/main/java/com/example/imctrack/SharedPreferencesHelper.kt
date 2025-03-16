@@ -9,6 +9,7 @@ class SharedPreferencesHelper(context: Context) {
 
     private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("user_config_preferences", Context.MODE_PRIVATE)
+    private val gson = Gson()
 
     // Sauvegarder le thème choisi
     fun saveTheme(isDarkMode: Boolean) {
@@ -32,31 +33,35 @@ class SharedPreferencesHelper(context: Context) {
         return sharedPreferences.getStringSet("user_list", emptySet()) ?: emptySet()
     }
 
+    // Supprimer tous les utilisateurs
     fun clearUsers() {
         sharedPreferences.edit().remove("user_list").apply()
     }
 
-    private val gson = Gson()
-
+    // Sauvegarder la liste des objectifs
     fun saveGoals(goals: List<String>) {
         val json = gson.toJson(goals)
         sharedPreferences.edit().putString("user_goals", json).apply()
     }
 
+    // Récupérer la liste des objectifs
     fun getGoals(): List<String> {
         val json = sharedPreferences.getString("user_goals", null)
+        val type = object : TypeToken<List<String>>() {}.type
         return if (json != null) {
-            val type = object : TypeToken<List<String>>() {}.type
             gson.fromJson(json, type)
         } else {
             emptyList()
         }
     }
-    fun clearAPI() {
-        sharedPreferences.edit().remove("API_KEY").apply()
-    }
 
+    // Supprimer tous les objectifs
     fun clearGoals() {
         sharedPreferences.edit().remove("user_goals").apply()
+    }
+
+    // Supprimer la clé API
+    fun clearAPI() {
+        sharedPreferences.edit().remove("API_KEY").apply()
     }
 }
