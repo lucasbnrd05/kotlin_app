@@ -1,5 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
         android:id="@+id/nav_previous"
         android:icon="@drawable/ic_left"
@@ -9,16 +10,5 @@
         android:id="@+id/nav_home"
         android:icon="@drawable/ic_home"
         android:title="Home" />
-
-    <item
-        android:id="@+id/nav_clear_data"
-        android:icon="@android:drawable/ic_menu_delete"
-        android:title="Reset"
-        app:showAsAction="ifRoom" />
-
-    <item
-        android:id="@+id/nav_scan"
-        android:icon="@android:drawable/ic_menu_camera"
-        android:title="Scan"/>
 
 </menu>

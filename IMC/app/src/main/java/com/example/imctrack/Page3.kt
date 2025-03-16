@@ -97,6 +97,11 @@ class Page3 : AppCompatActivity() {
                     clearGraphData()
                     true
                 }
+                R.id.nav_scan -> {
+                    val intent = Intent(this, Page4::class.java)
+                    startActivity(intent)
+                    true
+                }
                 else -> false
             }
         }
