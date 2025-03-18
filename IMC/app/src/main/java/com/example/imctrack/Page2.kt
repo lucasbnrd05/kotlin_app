@@ -16,6 +16,7 @@ import com.example.imctrack.Page3
 import com.example.imctrack.R
 import com.example.imctrack.SharedPreferencesHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -136,13 +137,29 @@ class Page2 : AppCompatActivity() {
                 toggleTheme()
                 true
             }
+
             R.id.nav_settings -> {
                 val intent = Intent(this, SettingsActivity::class.java)
                 startActivity(intent)
                 true
             }
+
+            R.id.action_logout -> {
+                logoutUser()
+                true
+            }
+
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun logoutUser() {
+        FirebaseAuth.getInstance().signOut()
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
+        Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show()
     }
 
     private fun setAppropriateTheme() {

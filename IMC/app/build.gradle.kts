@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("kotlin-kapt")
     id("kotlin-parcelize")
+    id("com.google.gms.google-services") // Ajout du plugin Google services
 }
 
 android {
@@ -36,6 +37,7 @@ android {
         jvmTarget = "11"
     }
 }
+
 
 dependencies {
     implementation(libs.androidx.core.ktx)
@@ -75,4 +77,12 @@ dependencies {
     implementation(libs.zxing.android.embedded)
     //implementation("com.journeyapps:zxing-android-embedded:4.3.0")
     implementation(libs.okhttp)
+
+    // Firebase Authentication
+    implementation("com.google.firebase:firebase-auth-ktx:21.1.0")
+    implementation("com.google.firebase:firebase-auth:21.1.0")
+
+    // Google Play Services Auth (nécessaire pour Google Sign-In)
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
 }
+

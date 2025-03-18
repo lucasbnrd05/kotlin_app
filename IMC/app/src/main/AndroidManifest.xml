@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Permissions requises -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -19,9 +20,9 @@
         android:theme="@style/Theme.IMCTrack"
         tools:targetApi="31">
 
-        <!-- Déclarez MainActivity -->
+        <!-- Déclaration des activités -->
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,26 +30,38 @@
             </intent-filter>
         </activity>
 
-        <!-- Déclarez Page2 -->
+        <!-- Supprimez ces lignes de MainActivity -->
+        <activity android:name=".MainActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity android:name=".Page2" />
-        <!-- Déclarez Page3 -->
         <activity android:name=".Page3" />
         <activity android:name=".Page4" />
         <activity
             android:name=".OpenStreetMapsActivity"
             android:exported="false" />
 
-        <!-- Déclarez SettingsActivity -->
         <activity
             android:name=".SettingsActivity"
             android:exported="true" />
+
         <activity android:name=".SecondActivity" />
         <activity android:name=".ThirdActivity" />
 
-        <activity android:name=".CustomScannerActivity"
+        <activity
+            android:name=".CustomScannerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
-    </application>
 
+        <!-- Meta-data pour Google Services -->
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
+
+    </application>
 </manifest>

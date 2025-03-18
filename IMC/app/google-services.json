@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "727389362769",
+    "project_id": "imctrack-7e238",
+    "storage_bucket": "imctrack-7e238.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:727389362769:android:0cd99803fdeb2688d93670",
+        "android_client_info": {
+          "package_name": "com.example.imctrack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "727389362769-v987casijo0aq261fmso8rm5q8pb5nq4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.imctrack",
+            "certificate_hash": "1ebb37c07424815987e829d4f43310b3bad67557"
+          }
+        },
+        {
+          "client_id": "727389362769-2g9lln70oju54g483nbikm2eck8l6o1v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvi5SAJIyKMRsO3wXKMRpsz1DlpfDW_cY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "727389362769-2g9lln70oju54g483nbikm2eck8l6o1v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
