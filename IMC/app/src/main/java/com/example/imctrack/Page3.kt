@@ -29,6 +29,7 @@ import com.github.mikephil.charting.data.RadarDataSet
 import com.github.mikephil.charting.data.RadarEntry
 import com.github.mikephil.charting.components.YAxis
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 class Page3 : AppCompatActivity() {
 
@@ -39,15 +40,22 @@ class Page3 : AppCompatActivity() {
     private val sports = listOf("Tennis", "Football", "Basket", "Handball", "Workout", "Running", "Swimming")
 
     private var radVal =  30f;
+    private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
+
+    // Récupérer l'ID de l'utilisateur connecté
+    private val userId: String
+        get() = firebaseAuth.currentUser?.uid ?: ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        loadRadarChartData()
-
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.page3)
         sharedPreferencesHelper = SharedPreferencesHelper(this)
         setAppropriateTheme()
+
+        // Charger les données depuis Firebase
+        loadRadarChartDataFromFirebase()
 
         val lineChart: LineChart = findViewById(R.id.lineChart)
         setupLineChart(lineChart)
@@ -55,6 +63,7 @@ class Page3 : AppCompatActivity() {
         radarChart = findViewById(R.id.radarChart)
         setupRadarChart()
 
+        // Ajouter les listeners des boutons
         findViewById<Button>(R.id.btn_tennis).setOnClickListener { updateSportValue(0) }
         findViewById<Button>(R.id.btn_football).setOnClickListener { updateSportValue(1) }
         findViewById<Button>(R.id.btn_basket).setOnClickListener { updateSportValue(2) }
@@ -63,33 +72,16 @@ class Page3 : AppCompatActivity() {
         findViewById<Button>(R.id.btn_course).setOnClickListener { updateSportValue(5) }
         findViewById<Button>(R.id.btn_piscine).setOnClickListener { updateSportValue(6) }
 
-        /*val clearDataButton: Button = findViewById(R.id.clearDataButton)
-        clearDataButton.setOnClickListener {
-            clearGraphData()
-        }*/
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.page3)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-
-        // Configurer la Toolbar
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-
-        // Configurer la Bottom Navigation
+        // Configuration de la Bottom Navigation
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_previous -> {
-                    // Naviguer vers Page2
                     val intent = Intent(this, Page2::class.java)
                     startActivity(intent)
                     true
                 }
                 R.id.nav_home -> {
-                    // Naviguer vers MainActivity
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     true
@@ -107,7 +99,98 @@ class Page3 : AppCompatActivity() {
             }
         }
 
+
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        loadRadarChartData()
+//
+//        super.onCreate(savedInstanceState)
+//        enableEdgeToEdge()
+//        setContentView(R.layout.page3)
+//        sharedPreferencesHelper = SharedPreferencesHelper(this)
+//        setAppropriateTheme()
+//
+//        val lineChart: LineChart = findViewById(R.id.lineChart)
+//        setupLineChart(lineChart)
+//
+//        radarChart = findViewById(R.id.radarChart)
+//        setupRadarChart()
+//
+//        findViewById<Button>(R.id.btn_tennis).setOnClickListener { updateSportValue(0) }
+//        findViewById<Button>(R.id.btn_football).setOnClickListener { updateSportValue(1) }
+//        findViewById<Button>(R.id.btn_basket).setOnClickListener { updateSportValue(2) }
+//        findViewById<Button>(R.id.btn_handball).setOnClickListener { updateSportValue(3) }
+//        findViewById<Button>(R.id.btn_workout).setOnClickListener { updateSportValue(4) }
+//        findViewById<Button>(R.id.btn_course).setOnClickListener { updateSportValue(5) }
+//        findViewById<Button>(R.id.btn_piscine).setOnClickListener { updateSportValue(6) }
+//
+//        /*val clearDataButton: Button = findViewById(R.id.clearDataButton)
+//        clearDataButton.setOnClickListener {
+//            clearGraphData()
+//        }*/
+//
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.page3)) { v, insets ->
+//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+//            insets
+//        }
+//
+//        // Configurer la Toolbar
+//        val toolbar: Toolbar = findViewById(R.id.toolbar)
+//        setSupportActionBar(toolbar)
+//
+//        // Configurer la Bottom Navigation
+//        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
+//        bottomNavigationView.setOnItemSelectedListener { item ->
+//            when (item.itemId) {
+//                R.id.nav_previous -> {
+//                    // Naviguer vers Page2
+//                    val intent = Intent(this, Page2::class.java)
+//                    startActivity(intent)
+//                    true
+//                }
+//                R.id.nav_home -> {
+//                    // Naviguer vers MainActivity
+//                    val intent = Intent(this, MainActivity::class.java)
+//                    startActivity(intent)
+//                    true
+//                }
+//                R.id.nav_clear_data -> {
+//                    clearGraphData()
+//                    true
+//                }
+//                R.id.nav_scan -> {
+//                    val intent = Intent(this, Page4::class.java)
+//                    startActivity(intent)
+//                    true
+//                }
+//                else -> false
+//            }
+//        }
+
     }
+
+    private fun saveRadarChartData() {
+        val sportData = mapOf(
+            "Tennis" to sportValues[0],
+            "Football" to sportValues[1],
+            "Basket" to sportValues[2],
+            "Handball" to sportValues[3],
+            "Workout" to sportValues[4],
+            "Running" to sportValues[5],
+            "Swimming" to sportValues[6]
+        )
+
+        // Enregistrer les données dans Firebase sous l'ID utilisateur
+        val userRef = database.getReference("users").child(userId)
+        userRef.child("sportValues").setValue(sportData)
+            .addOnSuccessListener {
+                Toast.makeText(this, "Données sauvegardées avec succès", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Erreur lors de la sauvegarde des données", Toast.LENGTH_SHORT).show()
+            }
+    }
+
 
     ////////////////////////////////////////  Radar Chart //////////////////////////////////////////
 
@@ -144,26 +227,47 @@ class Page3 : AppCompatActivity() {
         updateRadarChart()
     }
 
-    private fun saveRadarChartData() {
-        val sharedPrefs = getSharedPreferences("RADAR_CHART_DATA", MODE_PRIVATE)
-        val editor = sharedPrefs.edit()
-        editor.putString("SPORT_VALUES", sportValues.joinToString(","))
-        editor.apply()
-    }
+//    private fun saveRadarChartData() {
+//        val sharedPrefs = getSharedPreferences("RADAR_CHART_DATA", MODE_PRIVATE)
+//        val editor = sharedPrefs.edit()
+//        editor.putString("SPORT_VALUES", sportValues.joinToString(","))
+//        editor.apply()
+//    }
 
-    private fun loadRadarChartData() {
-        val sharedPrefs = getSharedPreferences("RADAR_CHART_DATA", MODE_PRIVATE)
-        val savedValues = sharedPrefs.getString("SPORT_VALUES", null)
+//    private fun loadRadarChartData() {
+//        val sharedPrefs = getSharedPreferences("RADAR_CHART_DATA", MODE_PRIVATE)
+//        val savedValues = sharedPrefs.getString("SPORT_VALUES", null)
+//
+//        if (savedValues != null) {
+//            sportValues = savedValues.split(",").map { it.toFloat() }.toMutableList()
+//        }
+//    }
+        private fun loadRadarChartDataFromFirebase() {
+            val userRef = database.getReference("users").child(userId)
 
-        if (savedValues != null) {
-            sportValues = savedValues.split(",").map { it.toFloat() }.toMutableList()
+            // Charger les données sportives
+            userRef.child("sportValues").get().addOnSuccessListener { snapshot ->
+                if (snapshot.exists()) {
+                    val sportData = snapshot.getValue(Map::class.java) as Map<String, Double>
+                    sportValues = sportData.values.map { it.toFloat() }.toMutableList()
+                    updateRadarChart()
+                } else {
+                    // Initialiser les valeurs par défaut si elles n'existent pas
+                    sportValues = mutableListOf(1f, 1f, 1f, 1f, 1f, 1f, 1f)
+                    updateRadarChart()
+                }
+            }
         }
-    }
 
-    override fun onPause() {
-        super.onPause()
-        saveRadarChartData()
-    }
+//    override fun onPause() {
+//        super.onPause()
+//        saveRadarChartData()
+//    }
+        override fun onPause() {
+            super.onPause()
+            saveRadarChartData()
+        }
+
 
     //////////////////////////////////////// Line Chart ////////////////////////////////////////////
 
@@ -263,26 +367,41 @@ class Page3 : AppCompatActivity() {
         lineChart.invalidate()
     }
 
+//    private fun clearGraphData() {
+//
+//        val sharedPrefs = getSharedPreferences("IMC_TRACKER", MODE_PRIVATE)
+//        sharedPrefs.edit().remove("HEIGHT_LIST").apply()
+//        sharedPrefs.edit().remove("WEIGHT_LIST").apply()
+//        sharedPrefs.edit().remove("BMI_LIST").apply()
+//
+//         ////////////////////// RESET LES DONNÉES DU RADAR CHART////////////////////////////////////
+//        val radarPrefs = getSharedPreferences("RADAR_CHART_DATA", MODE_PRIVATE)
+//        radarPrefs.edit().remove("SPORT_VALUES").apply()
+//        sportValues = mutableListOf(1f, 1f, 1f, 1f, 1f, 1f, 1f)
+//        updateRadarChart()
+//        ////////////////////////////////////////////////////////////////////////////////////////////
+//
+//        Toast.makeText(this, "Data reset !", Toast.LENGTH_SHORT).show()
+//
+//        finish()
+//        startActivity(intent)
+//    }
+
     private fun clearGraphData() {
+        val userRef = database.getReference("users").child(userId)
 
-        val sharedPrefs = getSharedPreferences("IMC_TRACKER", MODE_PRIVATE)
-        sharedPrefs.edit().remove("HEIGHT_LIST").apply()
-        sharedPrefs.edit().remove("WEIGHT_LIST").apply()
-        sharedPrefs.edit().remove("BMI_LIST").apply()
-
-         ////////////////////// RESET LES DONNÉES DU RADAR CHART////////////////////////////////////
-        val radarPrefs = getSharedPreferences("RADAR_CHART_DATA", MODE_PRIVATE)
-        radarPrefs.edit().remove("SPORT_VALUES").apply()
-        sportValues = mutableListOf(1f, 1f, 1f, 1f, 1f, 1f, 1f)
-        updateRadarChart()
-        ////////////////////////////////////////////////////////////////////////////////////////////
-
-        Toast.makeText(this, "Data reset !", Toast.LENGTH_SHORT).show()
-
-        finish()
-        startActivity(intent)
+        // Supprimer les données sur Firebase
+        userRef.child("sportValues").removeValue()
+            .addOnSuccessListener {
+                // Réinitialiser les données localement
+                sportValues = mutableListOf(1f, 1f, 1f, 1f, 1f, 1f, 1f)
+                updateRadarChart()
+                Toast.makeText(this, "Données réinitialisées !", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Erreur lors de la réinitialisation des données", Toast.LENGTH_SHORT).show()
+            }
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
