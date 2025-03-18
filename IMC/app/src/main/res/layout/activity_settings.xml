@@ -31,7 +31,7 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Clé API: [numéro]" /> <!-- Pour le design, remplacez [numéro] -->
+        tools:text="API Key: [numéro]" /> <!-- Pour le design, remplacez [numéro] -->
 
     <!-- Bouton pour entrer un nouvel ID utilisateur -->
     <Button
@@ -152,6 +152,25 @@
         app:layout_constraintTop_toBottomOf="@id/selectUserButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- TextView pour le texte avec le lien -->
+    <TextView
+        android:id="@+id/api_key_link_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:text="To create an API key, go on this website:  https://serpapi.com/google-maps-api"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:autoLink="web"
+        android:linksClickable="true"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintTop_toBottomOf="@id/deleteUsersButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
     <!-- BottomNavigationView -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
