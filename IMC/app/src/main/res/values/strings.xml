@@ -5,4 +5,6 @@
     <string name="page2">page2</string>
     <string name="page3">page3</string>
     <string name="location_retrieval">Location retrieval...</string>
+    <string name="default_web_client_id">727389362769-v987casijo0aq261fmso8rm5q8pb5nq4.apps.googleusercontent.com</string>
+
 </resources>

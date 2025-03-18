@@ -33,6 +33,7 @@ import com.google.android.gms.tasks.Task
 import org.osmdroid.util.GeoPoint
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -372,8 +373,22 @@ class MainActivity : AppCompatActivity() {
                 true
             }
 
+            R.id.action_logout -> {
+                logoutUser()
+                true
+            }
+
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun logoutUser() {
+        FirebaseAuth.getInstance().signOut()
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
+        Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show()
     }
 
     private fun setAppropriateTheme() {
