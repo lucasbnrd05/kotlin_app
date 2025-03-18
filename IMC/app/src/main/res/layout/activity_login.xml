@@ -22,14 +22,14 @@
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Mot de passe"
+            android:hint="Password"
             android:inputType="textPassword"/>
 
         <Button
             android:id="@+id/emailSignInButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Se connecter par Email"/>
+            android:text="Login by Email"/>
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/signInButton"

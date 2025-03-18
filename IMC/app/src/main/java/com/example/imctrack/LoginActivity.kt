@@ -94,24 +94,23 @@ class LoginActivity : AppCompatActivity() {
 
     private fun signInWithEmail(email: String, password: String) {
         if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Make sure to fill all the fields!", Toast.LENGTH_SHORT).show()
             return
         }
 
         mAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    Toast.makeText(this, "Connexion réussie", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Successfull Connexion", Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 } else {
-                    Log.d("FIREBASE", "Échec de connexion: ${task.exception?.message}")
 
                     // Si l'erreur est "INVALID_LOGIN_CREDENTIALS", créer un compte
                     if (task.exception?.message?.contains("INVALID_LOGIN_CREDENTIALS") == true) {
                         createUser(email, password)
                     } else {
-                        Toast.makeText(this, "Échec de connexion: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Failure connexion: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -121,17 +120,14 @@ class LoginActivity : AppCompatActivity() {
         mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    Toast.makeText(this, "Compte créé avec succès", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Account created successfully", Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 } else {
-                    Log.e("FIREBASE", "Échec de création de compte: ${task.exception?.message}")
-                    Toast.makeText(this, "Échec de création de compte: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Failure account creation: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
             }
     }
-
-
     companion object {
         private const val RC_SIGN_IN = 9001
     }

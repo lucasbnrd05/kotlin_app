@@ -184,10 +184,10 @@ class Page3 : AppCompatActivity() {
         val userRef = database.getReference("users").child(userId)
         userRef.child("sportValues").setValue(sportData)
             .addOnSuccessListener {
-                Toast.makeText(this, "Données sauvegardées avec succès", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Data successfully saved", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener {
-                Toast.makeText(this, "Erreur lors de la sauvegarde des données", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Data backup error", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -212,7 +212,7 @@ class Page3 : AppCompatActivity() {
 
     private fun updateRadarChart() {
         val entries = sportValues.map { RadarEntry(it) }
-        val dataSet = RadarDataSet(entries, "Activité Sportive").apply {
+        val dataSet = RadarDataSet(entries, "Sports Activity").apply {
             color = getColor(android.R.color.holo_blue_light)
             fillColor = getColor(android.R.color.holo_blue_light)
             setDrawFilled(true)
@@ -396,10 +396,10 @@ class Page3 : AppCompatActivity() {
                 // Réinitialiser les données localement
                 sportValues = mutableListOf(1f, 1f, 1f, 1f, 1f, 1f, 1f)
                 updateRadarChart()
-                Toast.makeText(this, "Données réinitialisées !", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Data reset!", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener {
-                Toast.makeText(this, "Erreur lors de la réinitialisation des données", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Data reset error", Toast.LENGTH_SHORT).show()
             }
     }
 
