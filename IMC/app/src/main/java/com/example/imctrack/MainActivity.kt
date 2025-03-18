@@ -291,9 +291,9 @@ class MainActivity : AppCompatActivity() {
         val goalInput = dialogView.findViewById<EditText>(R.id.goal_input)
 
         AlertDialog.Builder(this)
-            .setTitle("Ajouter un objectif")
+            .setTitle("Add a goal")
             .setView(dialogView)
-            .setPositiveButton("Ajouter") { _, _ ->
+            .setPositiveButton("Add") { _, _ ->
                 val goalText = goalInput.text.toString()
                 if (goalText.isNotEmpty()) {
                     goalList.add(goalText)
@@ -301,7 +301,7 @@ class MainActivity : AppCompatActivity() {
                     addGoalToList(goalText)
                 }
             }
-            .setNegativeButton("Annuler", null)
+            .setNegativeButton("Cancel", null)
             .show()
     }
 
