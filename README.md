@@ -24,16 +24,18 @@ By providing users with tools to monitor their progress and set fitness goals, I
 
 | Page | Screenshot | Description |
 |------|-----------|-------------|
-| **Home Page** | ![Home Page](files/home.png) | Login page. |
-| **First Page** | ![First Page](files/page1.png) | Home page with quick access to the main functions. |
-| **Settings Page** | ![Settings Page](files/settings.png) | Interface for modifying user information. |
-| **Position Page** | ![Position Page](files/localisation.png) | Interface for locating nearby sports venues. |
-| **BMI Page** | ![BMI Page](files/bmi.png) | Interface for calculating and displaying the user's BMI. |
-| **Charts Page** | ![Charts Page](files/chart.png) | Interface for displaying the user's BMI and physical activity. |
-| **Scanning Page** | ![Scanning Page](files/scan.png) | Interface for scanning items. |
+| **Home Page** | <img src="files/home.png" width="200" /> | Login page. |
+| **First Page** | <img src="files/page1.png" width="200" />| Home page with quick access to the main functions. |
+| **Settings Page** | <img src="files/settings.png" width="200" />| Interface for modifying user information. |
+| **Position Page** | <img src="files/localisation.png" width="200" />| Interface for locating nearby sports venues. |
+| **BMI Page** | <img src="files/bmi.png" width="200" />| Interface for calculating and displaying the user's BMI. |
+| **Charts Page** | <img src="files/chart.png" width="200" /> | Interface for displaying the user's BMI and physical activity. |
+| **Scanning Page** | <img src="files/scan.png" width="200" />| Interface for scanning items. |
 
 ## Demo video
-🔗 [See our demo video](files/final.webm)
+<div style="text-align: center;">
+  <img src="files/demo_copy.gif" width="300" />
+</div>
 
 ## Our Website
 🔗 [See our landing page](https://lucasbnrd05.github.io/imctrack/index.html)
