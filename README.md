@@ -26,6 +26,10 @@ By providing users with tools to monitor their progress and set fitness goals, I
 ## Demo video
 <img src="https://media.giphy.com/media/jaXDDTuKmeJvwI56kV/giphy.gif?cid=790b7611ewvkvfqfy8ze9n3bdh0ej20xcuqkvti8txpyocm6&ep=v1_gifs_search&rid=giphy.gif&ct=g" width="800">
 
+## Our Website
+🔗 [See our landing page](https://lucasbnrd05.github.io/imctrack/index.html)
+
+
 ## Features
 - **BMI Calculation & Tracking**: Users can calculate their BMI and monitor progress through graphical representation.
 - **Goal Setting**: Users can define personal fitness and health objectives.
@@ -61,6 +65,7 @@ By providing users with tools to monitor their progress and set fitness goals, I
 - **Dina DIDOUCHE** (dina.didouche@alumnos.upm.es)
 
 **Workload distribution**: (33% / 33% / 33%).
+
 
 
 
