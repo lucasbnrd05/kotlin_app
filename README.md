@@ -1,7 +1,7 @@
 # IMCTrack
 
 ## Github
-- Repository : [EPITIE](https://github.com/lucasbnrd05/epitie)
+- Repository : [IMCTrack](https://github.com/lucasbnrd05/epitie)
 - Releases : [Releases](https://github.com/lucasbnrd05/epitie/releases)
 
 ## Workspace
