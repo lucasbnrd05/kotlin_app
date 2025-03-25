@@ -39,6 +39,31 @@ By providing users with tools to monitor their progress and set fitness goals, I
 - **Multi-Device Synchronization**: Users can log in via Google or email, allowing access from multiple devices.
 - **API Key Management**: Users can generate a personalized API key to optimize location-based features.
 
+### Technical Features
+- Persistence in CSV/Text file  
+- Persistence in Room database, to store the running data.   
+- Firebase Realtime Database, to store user data.  
+- Firebase Authentication. 
+- Maps: OpenStreetMap. 
+- Resful APIs used: OpenStreetMap. 
+- Menu: Navigation Drawer (Version 2025). 
+- Version 2024:  
+  - Bottom navigation menu.   
+  - Toolbar. Ref: Source code  
+- ListViews. Ref: Source code  
+- Sensors: GPS coordinates. 
+- Images: Glide. 
+- Customizable markers with icon + text and map tiles. 
+- Add markers with current location. 
+- Create routes to connect markers. 
+- Shared Preferences for storing API keys. 
+- File storage (read and write). 
+- Timestamp and altitude recording. 
+- Switch button to activate location tracking. 
+- Customizable icons. 
+- Add SharedPreferences activity. 
+- RESTful API for external services.
+
 ## How to use
 1. **Download & Install**:
    - Clone the repository or download the latest release from [GitHub Releases](https://github.com/lucasbnrd05/epitie/releases).
