@@ -367,41 +367,71 @@ class Page3 : AppCompatActivity() {
         lineChart.invalidate()
     }
 
-//    private fun clearGraphData() {
-//
-//        val sharedPrefs = getSharedPreferences("IMC_TRACKER", MODE_PRIVATE)
-//        sharedPrefs.edit().remove("HEIGHT_LIST").apply()
-//        sharedPrefs.edit().remove("WEIGHT_LIST").apply()
-//        sharedPrefs.edit().remove("BMI_LIST").apply()
-//
-//         ////////////////////// RESET LES DONNÉES DU RADAR CHART////////////////////////////////////
-//        val radarPrefs = getSharedPreferences("RADAR_CHART_DATA", MODE_PRIVATE)
-//        radarPrefs.edit().remove("SPORT_VALUES").apply()
-//        sportValues = mutableListOf(1f, 1f, 1f, 1f, 1f, 1f, 1f)
-//        updateRadarChart()
-//        ////////////////////////////////////////////////////////////////////////////////////////////
-//
-//        Toast.makeText(this, "Data reset !", Toast.LENGTH_SHORT).show()
-//
-//        finish()
-//        startActivity(intent)
-//    }
-
     private fun clearGraphData() {
+
+        val sharedPrefs = getSharedPreferences("IMC_TRACKER", MODE_PRIVATE)
+        sharedPrefs.edit().remove("HEIGHT_LIST").apply()
+        sharedPrefs.edit().remove("WEIGHT_LIST").apply()
+        sharedPrefs.edit().remove("BMI_LIST").apply()
+
+         ////////////////////// RESET LES DONNÉES DU RADAR CHART////////////////////////////////////
+        val radarPrefs = getSharedPreferences("RADAR_CHART_DATA", MODE_PRIVATE)
+        radarPrefs.edit().remove("SPORT_VALUES").apply()
+        sportValues = mutableListOf(1f, 1f, 1f, 1f, 1f, 1f, 1f)
+        updateRadarChart()
+        ////////////////////////////////////////////////////////////////////////////////////////////
+
+        Toast.makeText(this, "Data reset !", Toast.LENGTH_SHORT).show()
+
+        finish()
+        startActivity(intent)
+        val userRef = database.getReference("users").child(userId)
+
+        ///////////////////////////////// Supprimer les données sur Firebase ///////////////////////
+        userRef.child("sportValues").removeValue()
+            .addOnSuccessListener {
+                // Réinitialiser les données localement
+                val sharedPrefs = getSharedPreferences("IMC_TRACKER", MODE_PRIVATE)
+                sharedPrefs.edit().remove("HEIGHT_LIST").apply()
+                sharedPrefs.edit().remove("WEIGHT_LIST").apply()
+                sharedPrefs.edit().remove("BMI_LIST").apply()
+                val radarPrefs = getSharedPreferences("RADAR_CHART_DATA", MODE_PRIVATE)
+                radarPrefs.edit().remove("SPORT_VALUES").apply()
+                sportValues = mutableListOf(1f, 1f, 1f, 1f, 1f, 1f, 1f)
+                updateRadarChart()
+                Toast.makeText(this, "Data reset!", Toast.LENGTH_SHORT).show()
+                finish()
+                startActivity(intent)
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Data reset error", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    /*private fun clearGraphData() {
         val userRef = database.getReference("users").child(userId)
 
         // Supprimer les données sur Firebase
         userRef.child("sportValues").removeValue()
             .addOnSuccessListener {
                 // Réinitialiser les données localement
+                val sharedPrefs = getSharedPreferences("IMC_TRACKER", MODE_PRIVATE)
+                sharedPrefs.edit().remove("HEIGHT_LIST").apply()
+                sharedPrefs.edit().remove("WEIGHT_LIST").apply()
+                sharedPrefs.edit().remove("BMI_LIST").apply()
+                val radarPrefs = getSharedPreferences("RADAR_CHART_DATA", MODE_PRIVATE)
+                radarPrefs.edit().remove("SPORT_VALUES").apply()
                 sportValues = mutableListOf(1f, 1f, 1f, 1f, 1f, 1f, 1f)
                 updateRadarChart()
                 Toast.makeText(this, "Data reset!", Toast.LENGTH_SHORT).show()
+                finish()
+                startActivity(intent)
             }
             .addOnFailureListener {
                 Toast.makeText(this, "Data reset error", Toast.LENGTH_SHORT).show()
             }
-    }
+
+    }*/
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
