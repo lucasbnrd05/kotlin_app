@@ -21,7 +21,16 @@ By providing users with tools to monitor their progress and set fitness goals, I
 
 
 ## Screenshots and navigation
-<img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmM4MHl6eW53NWpvOTY0ZzY3Y3ptZ3d0d2RxMWV3dzF6MzFrcW41biZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/1naXqFmZMHs6n1EXwe/giphy.gif" width="800">
+
+| Page | Screenshot | Description |
+|------|-----------|-------------|
+| **Home Page** | ![Home Page](files/home.png) | Login page. |
+| **First Page** | ![First Page](files/page1.png) | Home page with quick access to the main functions. |
+| **Settings Page** | ![Settings Page](files/settings.png) | Interface for modifying user information. |
+| **Position Page** | ![Position Page](files/localisation.png) | Interface for locating nearby sports venues. |
+| **BMI Page** | ![BMI Page](files/bmi.png) | Interface for calculating and displaying the user's BMI. |
+| **Charts Page** | ![Charts Page](files/chart.png) | Interface for displaying the user's BMI and physical activity. |
+| **Scanning Page** | ![Scanning Page](files/scan.png) | Interface for scanning items. |
 
 ## Demo video
 <img src="https://media.giphy.com/media/jaXDDTuKmeJvwI56kV/giphy.gif?cid=790b7611ewvkvfqfy8ze9n3bdh0ej20xcuqkvti8txpyocm6&ep=v1_gifs_search&rid=giphy.gif&ct=g" width="800">
