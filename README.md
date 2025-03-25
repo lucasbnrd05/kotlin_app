@@ -33,7 +33,7 @@ By providing users with tools to monitor their progress and set fitness goals, I
 | **Scanning Page** | ![Scanning Page](files/scan.png) | Interface for scanning items. |
 
 ## Demo video
-<img src="https://media.giphy.com/media/jaXDDTuKmeJvwI56kV/giphy.gif?cid=790b7611ewvkvfqfy8ze9n3bdh0ej20xcuqkvti8txpyocm6&ep=v1_gifs_search&rid=giphy.gif&ct=g" width="800">
+🔗 [See our demo video](files/final.webm)
 
 ## Our Website
 🔗 [See our landing page](https://lucasbnrd05.github.io/imctrack/index.html)
