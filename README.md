@@ -95,7 +95,6 @@ By providing users with tools to monitor their progress and set fitness goals, I
    - **Logout**: Available via the three-dot menu.
 
 ## Participants
-## List of MAD developers:
 - **Lucas BERNARDEAU** (lucas.bernardeau@alumnos.upm.es)
 - **Nathan VANATHATHAN** (nathan.vanathathan@alumnos.upm.es)
 - **Dina DIDOUCHE** (dina.didouche@alumnos.upm.es)
